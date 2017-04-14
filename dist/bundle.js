@@ -21953,6 +21953,7 @@
 			_this.handleAmountChange = _this.handleAmountChange.bind(_this);
 			_this.handleMonthsChange = _this.handleMonthsChange.bind(_this);
 			_this.handleYieldChange = _this.handleYieldChange.bind(_this);
+			_this.handleInflationRateChange = _this.handleInflationRateChange.bind(_this);
 			_this.validateInputs = _this.validateInputs.bind(_this);
 			_this.calculateResult = _this.calculateResult.bind(_this);
 			_this.state = {
@@ -21961,7 +21962,7 @@
 				yield: 0.18,
 				errorMessage: null,
 				result: null,
-				inflationRate: 0.04,
+				inflationRate: 0,
 				inflationAdjustedResult: null,
 				delay: 24,
 				updateRequired: false
@@ -21993,6 +21994,11 @@
 			key: 'handleYieldChange',
 			value: function handleYieldChange(evt) {
 				this.setState({ yield: evt.target.value / 100, updateRequired: true });
+			}
+		}, {
+			key: 'handleInflationRateChange',
+			value: function handleInflationRateChange(evt) {
+				this.setState({ inflationRate: (evt.target.value / 100).toFixed(2), updateRequired: true });
 			}
 		}, {
 			key: 'validateInputs',
@@ -22109,7 +22115,7 @@
 						),
 						_react2.default.createElement(
 							'div',
-							{ className: 'row' },
+							{ className: 'row', style: { marginTop: '0' } },
 							_react2.default.createElement(
 								'div',
 								{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', paddingLeft: '15px' } },
@@ -22182,77 +22188,81 @@
 								'table',
 								{ className: 'table' },
 								_react2.default.createElement(
-									'tr',
+									'tbody',
 									null,
 									_react2.default.createElement(
-										'td',
+										'tr',
 										null,
-										'Inflation Rate :'
+										_react2.default.createElement(
+											'td',
+											{ style: { borderTop: 'none' } },
+											'Inflation Rate :'
+										),
+										_react2.default.createElement(
+											'td',
+											{ style: { borderTop: 'none' } },
+											_react2.default.createElement('input', { type: 'number', className: 'calulatorInput', placeholder: '%', min: '0', max: '30', onChange: this.handleInflationRateChange, value: this.state.inflationRate * 100, style: { textAlign: 'right' } }),
+											'%'
+										)
 									),
 									_react2.default.createElement(
-										'td',
+										'tr',
 										null,
-										this.state.inflationRate * 100,
-										' %'
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Inflation Adjusted Amount after term :'
+										_react2.default.createElement(
+											'td',
+											null,
+											'Inflation Adjusted Amount after term :'
+										),
+										_react2.default.createElement(
+											'td',
+											null,
+											'\u20B9',
+											this.state.inflationAdjustedResult
+										)
 									),
 									_react2.default.createElement(
-										'td',
+										'tr',
 										null,
-										'\u20B9',
-										this.state.inflationAdjustedResult
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Delay in Investing (in months) :'
+										_react2.default.createElement(
+											'td',
+											null,
+											'Delay in Investing (in months) :'
+										),
+										_react2.default.createElement(
+											'td',
+											null,
+											this.state.delay
+										)
 									),
 									_react2.default.createElement(
-										'td',
+										'tr',
 										null,
-										this.state.delay
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Cost of Delay :'
+										_react2.default.createElement(
+											'td',
+											null,
+											'Cost of Delay :'
+										),
+										_react2.default.createElement(
+											'td',
+											null,
+											'\u20B9',
+											this.state.delayCost
+										)
 									),
 									_react2.default.createElement(
-										'td',
+										'tr',
 										null,
-										'\u20B9',
-										this.state.delayCost
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Inflation Adjusted Cost of delay :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'\u20B9',
-										this.state.inflationAdjustedDelayCost
+										_react2.default.createElement(
+											'td',
+											null,
+											'Inflation Adjusted Cost of delay :'
+										),
+										_react2.default.createElement(
+											'td',
+											null,
+											'\u20B9',
+											this.state.inflationAdjustedDelayCost
+										)
 									)
 								)
 							)
@@ -22305,19 +22315,27 @@
 
 			_this.handleAmountChange = _this.handleAmountChange.bind(_this);
 			_this.handleMonthsChange = _this.handleMonthsChange.bind(_this);
-			_this.handleYieldChange = _this.handleYieldChange.bind(_this);
-			_this.validateInputs = _this.validateInputs.bind(_this);
+			_this.handleRateChange = _this.handleRateChange.bind(_this);
+			_this.handleCompPeriodChange = _this.handleCompPeriodChange.bind(_this);
+			_this.handleTaxRateChange = _this.handleTaxRateChange.bind(_this);
+			_this.handleInflationRateChange = _this.handleInflationRateChange.bind(_this);
 			_this.calculateResult = _this.calculateResult.bind(_this);
+			_this.calculateInflationAdjustment = _this.calculateInflationAdjustment.bind(_this);
 			_this.state = {
-				amount: 5000,
+				amount: 100000,
 				months: 36,
-				yield: 0.18,
-				errorMessage: null,
+				rate: 0.065,
+				compoundPeriod: 1,
 				result: null,
-				inflationRate: 0.04,
-				inflationAdjustedResult: null,
-				delay: 24,
-				updateRequired: false
+				errorMessage: null,
+				annualYield: 0.0716,
+				taxRate: 0.23,
+				returnAfterTax: null,
+				yieldAfterTax: null,
+				inflationRate: 0,
+				inflationAdjustedReturn: null,
+				inflationAdjustedActualYield: null,
+				inflationAdjustedAnnualYield: null
 			};
 			return _this;
 		}
@@ -22328,32 +22346,66 @@
 				this.calculateResult();
 			}
 		}, {
-			key: 'componentDidUpdate',
-			value: function componentDidUpdate() {
-				if (this.state.updateRequired) this.calculateResult();
-			}
-		}, {
 			key: 'handleAmountChange',
 			value: function handleAmountChange(evt) {
-				this.setState({ amount: evt.target.value, updateRequired: true });
+				var _this2 = this;
+
+				this.setState({ amount: evt.target.value }, function () {
+					return _this2.calculateResult();
+				});
 			}
 		}, {
 			key: 'handleMonthsChange',
 			value: function handleMonthsChange(evt) {
-				this.setState({ months: evt.target.value, updateRequired: true });
+				var _this3 = this;
+
+				this.setState({ months: evt.target.value }, function () {
+					return _this3.calculateResult();
+				});
 			}
 		}, {
-			key: 'handleYieldChange',
-			value: function handleYieldChange(evt) {
-				this.setState({ yield: evt.target.value / 100, updateRequired: true });
+			key: 'handleRateChange',
+			value: function handleRateChange(evt) {
+				var _this4 = this;
+
+				this.setState({ rate: evt.target.value / 100 }, function () {
+					return _this4.calculateResult();
+				});
+			}
+		}, {
+			key: 'handleCompPeriodChange',
+			value: function handleCompPeriodChange(evt) {
+				var _this5 = this;
+
+				this.setState({ compoundPeriod: evt.target.value }, function () {
+					return _this5.calculateResult();
+				});
+			}
+		}, {
+			key: 'handleTaxRateChange',
+			value: function handleTaxRateChange(evt) {
+				var _this6 = this;
+
+				this.setState({ taxRate: evt.target.value }, function () {
+					_this6.calculateReturnAfterTax();
+				});
+			}
+		}, {
+			key: 'handleInflationRateChange',
+			value: function handleInflationRateChange(evt) {
+				var _this7 = this;
+
+				this.setState({ inflationRate: (evt.target.value / 100).toFixed(2) }, function () {
+					return _this7.calculateInflationAdjustment();
+				});
 			}
 		}, {
 			key: 'validateInputs',
 			value: function validateInputs() {
-				if (this.state.amount != null && this.state.months != null && this.state.yield != null) {
-					if (this.state.amount > 0 && this.state.months > 0 && this.state.yield > 0) {
-						if (this.state.yield >= 1) {
-							this.setState({ errorMessage: 'Yield percentage cannot be greater than 100' });
+				if (this.state.amount != null && this.state.months != null && this.state.rate != null) {
+					if (this.state.amount > 0 && this.state.months > 0 && this.state.rate > 0) {
+						if (this.state.rate >= 1) {
+							this.setState({ errorMessage: 'Investment Rate cannot be greater than 100' });
 							return false;
 						} else {
 							return true;
@@ -22370,22 +22422,34 @@
 		}, {
 			key: 'calculateResult',
 			value: function calculateResult() {
-				//console.log('calculating result');
+				var _this8 = this;
+
 				if (this.validateInputs()) {
-					var currentState = this.state;
-					var result = parseFloat(currentState.amount * (Math.pow(1 + currentState.yield / 12, currentState.months) - 1) / (currentState.yield / 12));
-					var inflationAdjustedResult = parseFloat(result / Math.pow(1 + currentState.inflationRate, currentState.months / 12));
-
-					var delayCost = parseFloat(result - currentState.amount * (Math.pow(1 + currentState.yield / 12, currentState.months - currentState.delay) - 1) / (currentState.yield / 12));
-					var inflationAdjustedDelayCost = parseFloat((result - currentState.amount * (Math.pow(1 + currentState.yield / 12, currentState.months - currentState.delay) - 1) / (currentState.yield / 12)) / Math.pow(1 + currentState.inflationRate, (currentState.months - currentState.delay) / 12));
-
-					this.setState({ errorMessage: null, updateRequired: false, result: result.toFixed(2), inflationAdjustedResult: inflationAdjustedResult.toFixed(2), delayCost: delayCost.toFixed(2), inflationAdjustedDelayCost: inflationAdjustedDelayCost.toFixed(2) });
+					if (this.state.amount != null && this.state.months != null && this.state.rate != null && this.state.compoundPeriod != null) {
+						var currentState = this.state;
+						var result = parseFloat(currentState.amount * Math.pow(1 + currentState.rate / currentState.compoundPeriod, currentState.months));
+						this.setState({ result: result.toFixed(2) }, function () {
+							_this8.calculateReturnAfterTax(_this8.calculateInflationAdjustment);
+						});
+					}
 				}
 			}
 		}, {
-			key: 'toggleTable',
-			value: function toggleTable() {
-				if ($('.viewMore table').css('display') == 'none') $('.viewMore table').show('blind');else $('.viewMore table').hide('blind');
+			key: 'calculateReturnAfterTax',
+			value: function calculateReturnAfterTax(callback) {
+				var returnAfterTax = parseFloat((this.state.result - this.state.amount) * (1 - this.state.taxRate) + parseFloat(this.state.amount));
+				var yieldAfterTax = parseFloat((returnAfterTax - this.state.amount) / (this.state.months / 12) / this.state.amount);
+				this.setState({ returnAfterTax: returnAfterTax.toFixed(2), yieldAfterTax: yieldAfterTax }, function () {
+					if (callback) callback();
+				});
+			}
+		}, {
+			key: 'calculateInflationAdjustment',
+			value: function calculateInflationAdjustment() {
+				var result = parseFloat(this.state.returnAfterTax - this.state.returnAfterTax * this.state.inflationRate * (this.state.months / 12));
+				var actualYield = parseFloat((result - this.state.amount) / this.state.amount);
+				var annualYield = parseFloat(actualYield / (this.state.months / 12));
+				this.setState({ inflationAdjustedReturn: result.toFixed(2), inflationAdjustedActualYield: actualYield.toFixed(4), inflationAdjustedAnnualYield: annualYield.toFixed(4) });
 			}
 		}, {
 			key: 'render',
@@ -22410,7 +22474,7 @@
 								_react2.default.createElement(
 									'b',
 									null,
-									'Monthly Amount'
+									'Investment Value'
 								),
 								_react2.default.createElement(
 									'div',
@@ -22420,7 +22484,80 @@
 										{ className: 'input-group-addon' },
 										'\u20B9'
 									),
-									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput ', placeholder: '5000', onChange: this.handleAmountChange })
+									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: '100000', onChange: this.handleAmountChange })
+								)
+							)
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'row', style: { textAlign: 'left', marginBottom: '0' } },
+							_react2.default.createElement(
+								'div',
+								{ className: 'col-md-12 col-sm-12 col-xs-12' },
+								_react2.default.createElement(
+									'b',
+									null,
+									'Investment Rate'
+								)
+							)
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'row', style: { marginTop: '0' } },
+							_react2.default.createElement(
+								'div',
+								{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', paddingLeft: '15px' } },
+								_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '30', onChange: this.handleRateChange, value: this.state.rate * 100, style: { marginTop: '15px' } })
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'col-md-5 col-sm-5 col-xs-5' },
+								_react2.default.createElement(
+									'div',
+									{ className: 'input-group' },
+									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Investment Rate', min: '1', max: '30', onChange: this.handleRateChange, value: this.state.rate * 100 }),
+									_react2.default.createElement(
+										'span',
+										{ className: 'input-group-addon' },
+										'%'
+									)
+								)
+							)
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'row' },
+							_react2.default.createElement(
+								'div',
+								{ className: 'col-md-12', style: { textAlign: 'left' } },
+								_react2.default.createElement(
+									'b',
+									null,
+									'Compounding Period'
+								),
+								_react2.default.createElement(
+									'select',
+									{ className: 'form-control', onChange: this.handleCompPeriodChange, style: { textAlign: 'center', marginTop: '5px' } },
+									_react2.default.createElement(
+										'option',
+										{ value: '1', selected: true },
+										'Yearly'
+									),
+									_react2.default.createElement(
+										'option',
+										{ value: '6' },
+										'Half-Yearly'
+									),
+									_react2.default.createElement(
+										'option',
+										{ value: '4' },
+										'Quaterly'
+									),
+									_react2.default.createElement(
+										'option',
+										{ value: '12' },
+										'Monthly'
+									)
 								)
 							)
 						),
@@ -22438,47 +22575,11 @@
 								_react2.default.createElement(
 									'div',
 									{ className: 'input-group' },
-									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: '36', min: '1', max: '30', onChange: this.handleMonthsChange }),
+									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: '36', min: '1', onChange: this.handleMonthsChange }),
 									_react2.default.createElement(
 										'span',
 										{ className: 'input-group-addon' },
 										'months'
-									)
-								)
-							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'row', style: { textAlign: 'left', marginBottom: '0' } },
-							_react2.default.createElement(
-								'div',
-								{ className: 'col-md-12 col-sm-12 col-xs-12' },
-								_react2.default.createElement(
-									'b',
-									null,
-									'Expected Yield/Year'
-								)
-							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'row' },
-							_react2.default.createElement(
-								'div',
-								{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', paddingLeft: '15px' } },
-								_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '30', onChange: this.handleYieldChange, value: this.state.yield * 100, style: { marginTop: '15px' } })
-							),
-							_react2.default.createElement(
-								'div',
-								{ className: 'col-md-5 col-sm-5 col-xs-5' },
-								_react2.default.createElement(
-									'div',
-									{ className: 'input-group' },
-									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: '%', min: '1', max: '30', onChange: this.handleYieldChange, value: this.state.yield * 100 }),
-									_react2.default.createElement(
-										'span',
-										{ className: 'input-group-addon' },
-										'%'
 									)
 								)
 							)
@@ -22491,10 +22592,10 @@
 					),
 					_react2.default.createElement(
 						'div',
-						{ style: { padding: '20px' } },
+						{ style: { padding: '10px' } },
 						_react2.default.createElement(
 							'div',
-							{ style: { color: 'steelblue', fontSize: 'x-large', textAlign: 'center' } },
+							{ style: { textAlign: 'center', color: 'steelblue', fontSize: 'x-large' } },
 							_react2.default.createElement(
 								'span',
 								{ style: { fontSize: 'large', color: 'black' } },
@@ -22505,107 +22606,181 @@
 								{ style: { color: 'black', margin: '0 10px 0 20px' } },
 								'\u20B9'
 							),
-							this.state.result,
-							_react2.default.createElement(
-								'div',
-								{ style: { fontSize: 'medium', color: 'black', marginTop: '10px' } },
-								'for an amount of \u20B9',
-								this.state.amount,
-								' with ',
-								this.state.yield * 100,
-								'% interest per annum for ',
-								this.state.months,
-								' months'
-							)
+							this.state.result
 						),
 						_react2.default.createElement(
 							'div',
-							{ className: 'viewMore', style: { marginTop: '20px' } },
+							{ style: { textAlign: 'center' } },
+							'Annualized Yield: ',
+							this.state.annualYield * 100,
+							' %'
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'row' },
 							_react2.default.createElement(
 								'div',
-								{ style: { paddingBottom: '5px', marginBottom: '10px', fontWeight: 'bold', fontSize: 'medium', borderBottom: '2px solid steelblue' } },
-								'Inflation Adjustment',
+								{ className: 'viewMore col-md-6', style: { marginTop: '20px' } },
 								_react2.default.createElement(
-									'span',
-									{ src: 'images/expand-arrows.svg', width: '25', onClick: this.toggleTable, id: 'viewMoreBtn' },
-									'\u2193'
+									'div',
+									{ style: { marginBottom: '5px', fontWeight: 'bold', fontSize: 'medium' } },
+									'Tax Adjustment'
+								),
+								_react2.default.createElement(
+									'table',
+									{ className: 'table', style: { marginBottom: '0px' } },
+									_react2.default.createElement(
+										'tbody',
+										{ style: { borderTop: '2px solid steelblue' } },
+										_react2.default.createElement(
+											'tr',
+											null,
+											_react2.default.createElement(
+												'td',
+												null,
+												'Tax Rate :'
+											),
+											_react2.default.createElement(
+												'td',
+												null,
+												_react2.default.createElement(
+													'select',
+													{ onChange: this.handleTaxRateChange },
+													_react2.default.createElement(
+														'option',
+														{ value: '0' },
+														'0%'
+													),
+													_react2.default.createElement(
+														'option',
+														{ value: '0.10' },
+														'10%'
+													),
+													_react2.default.createElement(
+														'option',
+														{ value: '0.20' },
+														'20%'
+													),
+													_react2.default.createElement(
+														'option',
+														{ value: '0.23', selected: true },
+														'23%'
+													),
+													_react2.default.createElement(
+														'option',
+														{ value: '0.30' },
+														'30%'
+													)
+												)
+											)
+										),
+										_react2.default.createElement(
+											'tr',
+											null,
+											_react2.default.createElement(
+												'td',
+												null,
+												'Return After Taxes :'
+											),
+											_react2.default.createElement(
+												'td',
+												null,
+												'\u20B9',
+												this.state.returnAfterTax
+											)
+										),
+										_react2.default.createElement(
+											'tr',
+											null,
+											_react2.default.createElement(
+												'td',
+												null,
+												'Annualized Yield After Taxes :'
+											),
+											_react2.default.createElement(
+												'td',
+												null,
+												(this.state.yieldAfterTax * 100).toFixed(2),
+												' %'
+											)
+										)
+									)
 								)
 							),
 							_react2.default.createElement(
-								'table',
-								{ className: 'table' },
+								'div',
+								{ className: 'viewMore inflationAdjustment col-md-6', style: { marginTop: '20px' } },
 								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Inflation Rate :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										this.state.inflationRate * 100,
-										' %'
-									)
+									'div',
+									{ style: { marginBottom: '5px', fontWeight: 'bold', fontSize: 'medium' } },
+									'Inflation Adjustment'
 								),
 								_react2.default.createElement(
-									'tr',
-									null,
+									'table',
+									{ className: 'table', style: { borderTop: '2px solid steelblue' } },
 									_react2.default.createElement(
-										'td',
+										'tbody',
 										null,
-										'Inflation Adjusted Amount after term :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'\u20B9',
-										this.state.inflationAdjustedResult
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Delay in Investing (in months) :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										this.state.delay
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Cost of Delay :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'\u20B9',
-										this.state.delayCost
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Inflation Adjusted Cost of delay :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'\u20B9',
-										this.state.inflationAdjustedDelayCost
+										_react2.default.createElement(
+											'tr',
+											null,
+											_react2.default.createElement(
+												'td',
+												null,
+												'Inflation Rate :'
+											),
+											_react2.default.createElement(
+												'td',
+												null,
+												_react2.default.createElement('input', { type: 'number', className: 'calulatorInput', placeholder: '%', min: '0', max: '30', onChange: this.handleInflationRateChange, value: this.state.inflationRate * 100, style: { textAlign: 'right' } }),
+												'%'
+											)
+										),
+										_react2.default.createElement(
+											'tr',
+											null,
+											_react2.default.createElement(
+												'td',
+												null,
+												'Inflation Adjusted Return :'
+											),
+											_react2.default.createElement(
+												'td',
+												null,
+												'\u20B9',
+												this.state.inflationAdjustedReturn
+											)
+										),
+										_react2.default.createElement(
+											'tr',
+											null,
+											_react2.default.createElement(
+												'td',
+												null,
+												'Inflation Adjusted Actual Yield (Net) :'
+											),
+											_react2.default.createElement(
+												'td',
+												null,
+												(this.state.inflationAdjustedActualYield * 100).toFixed(2),
+												'%'
+											)
+										),
+										_react2.default.createElement(
+											'tr',
+											null,
+											_react2.default.createElement(
+												'td',
+												null,
+												'Inflation Adjusted Annualized Yield :'
+											),
+											_react2.default.createElement(
+												'td',
+												null,
+												(this.state.inflationAdjustedAnnualYield * 100).toFixed(2),
+												'%'
+											)
+										)
 									)
 								)
 							)

@@ -7,6 +7,7 @@ class SIPCalculator extends Component{
 		this.handleAmountChange = this.handleAmountChange.bind(this);
 		this.handleMonthsChange = this.handleMonthsChange.bind(this);
 		this.handleYieldChange = this.handleYieldChange.bind(this);
+		this.handleInflationRateChange = this.handleInflationRateChange.bind(this);
 		this.validateInputs = this.validateInputs.bind(this);
 		this.calculateResult = this.calculateResult.bind(this);
 		this.state = {
@@ -15,7 +16,7 @@ class SIPCalculator extends Component{
 			yield: 0.18,
 			errorMessage: null,
 			result: null,
-			inflationRate: 0.04,
+			inflationRate: 0,
 			inflationAdjustedResult: null,
 			delay: 24,
 			updateRequired: false
@@ -35,6 +36,9 @@ class SIPCalculator extends Component{
 	}
 	handleYieldChange(evt){
 		this.setState({ yield: evt.target.value/100, updateRequired: true });
+	}
+	handleInflationRateChange(evt){
+		this.setState({ inflationRate: (evt.target.value/100).toFixed(2), updateRequired: true });
 	}
 	validateInputs(){
 		if( this.state.amount != null && this.state.months != null && this.state.yield != null ){
@@ -99,7 +103,7 @@ class SIPCalculator extends Component{
 					<div className="row" style={{ textAlign: 'left', marginBottom: '0' }}>
 						<div className="col-md-12 col-sm-12 col-xs-12"><b>Expected Yield/Year</b></div>
 					</div>
-					<div className="row">
+					<div className="row" style={{ marginTop: '0' }}>
 						<div className="col-md-7 col-sm-7 col-xs-7" style={{textAlign: 'left', paddingLeft: '15px'}}>
 							<input id="yieldRange" type="range" step="1" min="0" max="30" onChange={this.handleYieldChange} value={(this.state.yield*100)} style={{ marginTop: '15px' }}/>
 						</div>
@@ -128,9 +132,10 @@ class SIPCalculator extends Component{
 							<span src="images/expand-arrows.svg" width="25" onClick={this.toggleTable} id='viewMoreBtn'>&darr;</span>
 						</div>
 						<table className="table" >
+							<tbody>
 							<tr>
-								<td>Inflation Rate :</td>
-								<td>{this.state.inflationRate*100} %</td>
+								<td style={{borderTop: 'none'}}>Inflation Rate :</td>
+								<td style={{borderTop: 'none'}}><input type="number" className="calulatorInput" placeholder="%" min="0" max="30" onChange={this.handleInflationRateChange} value={(this.state.inflationRate*100)} style={{textAlign: 'right'}} />%</td>
 							</tr>
 							<tr>
 								<td>Inflation Adjusted Amount after term :</td>
@@ -148,6 +153,7 @@ class SIPCalculator extends Component{
 								<td>Inflation Adjusted Cost of delay :</td>
 								<td>₹{this.state.inflationAdjustedDelayCost}</td>
 							</tr>
+							</tbody>
 						</table>
 					</div>
 				</div>
