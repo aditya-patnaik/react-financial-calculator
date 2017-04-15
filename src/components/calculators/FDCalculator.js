@@ -98,6 +98,7 @@ class FDCalculator extends Component{
 				return (
 					<div style={{ background: 'linear-gradient( darkgrey, lightgrey, darkgrey)', padding: '10px', boxShadow: '0 0 10px black' }}>
 						<div>
+							<img src="resources/images/previous.svg" width="30" className='hidden-sm hidden-md hidden-lg' style={{float: 'left', cursor: 'pointer'}} onClick={()=>this.props.openApp(null)}/>
 							<h2 style={{textAlign: 'center', borderBottom: '2px solid steelblue', paddingBottom: '10px', marginBottom: '10px' }}>FD Calculator</h2>
 							<div className="row" style={{ marginTop: '20px' }}>
 								<div className="col-md-12 col-sm-12 col-xs-12" style={{ textAlign: 'left' }}>

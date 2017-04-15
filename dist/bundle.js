@@ -21706,7 +21706,7 @@
 			value: function render() {
 				var output, selectedCalculator;
 				if (this.state.selectedMenu != null) {
-					if (this.state.selectedMenu === 1) selectedCalculator = _react2.default.createElement(_SIPCalculator2.default, null);else if (this.state.selectedMenu === 2) selectedCalculator = _react2.default.createElement(_FDCalculator2.default, null);else if (this.state.selectedMenu === 3) selectedCalculator = _react2.default.createElement(_GoalCalculator2.default, null);else if (this.state.selectedMenu === 4) selectedCalculator = _react2.default.createElement(_EMICalculator2.default, null);else if (this.state.selectedMenu === 5) selectedCalculator = _react2.default.createElement(_RetirementPlanning2.default, null);
+					if (this.state.selectedMenu === 1) selectedCalculator = _react2.default.createElement(_SIPCalculator2.default, { openApp: this.openApp });else if (this.state.selectedMenu === 2) selectedCalculator = _react2.default.createElement(_FDCalculator2.default, { openApp: this.openApp });else if (this.state.selectedMenu === 3) selectedCalculator = _react2.default.createElement(_GoalCalculator2.default, { openApp: this.openApp });else if (this.state.selectedMenu === 4) selectedCalculator = _react2.default.createElement(_EMICalculator2.default, { openApp: this.openApp });else if (this.state.selectedMenu === 5) selectedCalculator = _react2.default.createElement(_RetirementPlanning2.default, { openApp: this.openApp });
 					output = _react2.default.createElement(
 						'div',
 						{ className: 'row' },
@@ -22006,17 +22006,17 @@
 				if (this.state.amount != null && this.state.months != null && this.state.yield != null) {
 					if (this.state.amount > 0 && this.state.months > 0 && this.state.yield > 0) {
 						if (this.state.yield >= 1) {
-							this.setState({ errorMessage: 'Yield percentage cannot be greater than 100' });
+							this.setState({ errorMessage: 'Yield percentage cannot be greater than 100', updateRequired: false });
 							return false;
 						} else {
 							return true;
 						}
 					} else {
-						this.setState({ errorMessage: 'Negative values detected' });
+						this.setState({ errorMessage: 'Negative values detected', updateRequired: false });
 						return false;
 					}
 				} else {
-					this.setState({ errorMessage: 'Empty field/(s) detected' });
+					this.setState({ errorMessage: 'Empty field/(s) detected', updateRequired: false });
 					return false;
 				}
 			}
@@ -22043,12 +22043,17 @@
 		}, {
 			key: 'render',
 			value: function render() {
+				var _this2 = this;
+
 				return _react2.default.createElement(
 					'div',
 					{ style: { background: 'linear-gradient( darkgrey, lightgrey, darkgrey)', padding: '10px', boxShadow: '0 0 10px black' } },
 					_react2.default.createElement(
 						'div',
 						null,
+						_react2.default.createElement('img', { src: 'resources/images/previous.svg', width: '30', className: 'hidden-sm hidden-md hidden-lg', style: { float: 'left', cursor: 'pointer' }, onClick: function onClick() {
+								return _this2.props.openApp(null);
+							} }),
 						_react2.default.createElement(
 							'h2',
 							{ style: { textAlign: 'center', borderBottom: '2px solid steelblue', paddingBottom: '10px', marginBottom: '10px' } },
@@ -22151,7 +22156,7 @@
 							_react2.default.createElement(
 								'span',
 								{ style: { fontSize: 'large', color: 'black' } },
-								'Amount after term :'
+								'Amount at maturity :'
 							),
 							_react2.default.createElement(
 								'span',
@@ -22162,9 +22167,9 @@
 							_react2.default.createElement(
 								'div',
 								{ style: { fontSize: 'medium', color: 'black', marginTop: '10px' } },
-								'for an amount of \u20B9',
+								'when an amount of \u20B9',
 								this.state.amount,
-								' with ',
+								' is invested with ',
 								this.state.yield * 100,
 								'% interest per annum for ',
 								this.state.months,
@@ -22454,12 +22459,17 @@
 		}, {
 			key: 'render',
 			value: function render() {
+				var _this9 = this;
+
 				return _react2.default.createElement(
 					'div',
 					{ style: { background: 'linear-gradient( darkgrey, lightgrey, darkgrey)', padding: '10px', boxShadow: '0 0 10px black' } },
 					_react2.default.createElement(
 						'div',
 						null,
+						_react2.default.createElement('img', { src: 'resources/images/previous.svg', width: '30', className: 'hidden-sm hidden-md hidden-lg', style: { float: 'left', cursor: 'pointer' }, onClick: function onClick() {
+								return _this9.props.openApp(null);
+							} }),
 						_react2.default.createElement(
 							'h2',
 							{ style: { textAlign: 'center', borderBottom: '2px solid steelblue', paddingBottom: '10px', marginBottom: '10px' } },
@@ -22832,20 +22842,14 @@
 			var _this = _possibleConstructorReturn(this, (GoalCalculator.__proto__ || Object.getPrototypeOf(GoalCalculator)).call(this));
 
 			_this.handleAmountChange = _this.handleAmountChange.bind(_this);
-			_this.handleMonthsChange = _this.handleMonthsChange.bind(_this);
+			_this.handleYearsChange = _this.handleYearsChange.bind(_this);
 			_this.handleYieldChange = _this.handleYieldChange.bind(_this);
-			_this.validateInputs = _this.validateInputs.bind(_this);
-			_this.calculateResult = _this.calculateResult.bind(_this);
 			_this.state = {
-				amount: 5000,
-				months: 36,
-				yield: 0.18,
-				errorMessage: null,
+				amount: 1500000,
+				years: 5,
+				yield: 0.1,
 				result: null,
-				inflationRate: 0.04,
-				inflationAdjustedResult: null,
-				delay: 24,
-				updateRequired: false
+				errorMessage: null
 			};
 			return _this;
 		}
@@ -22856,32 +22860,39 @@
 				this.calculateResult();
 			}
 		}, {
-			key: 'componentDidUpdate',
-			value: function componentDidUpdate() {
-				if (this.state.updateRequired) this.calculateResult();
-			}
-		}, {
 			key: 'handleAmountChange',
 			value: function handleAmountChange(evt) {
-				this.setState({ amount: evt.target.value, updateRequired: true });
+				var _this2 = this;
+
+				this.setState({ amount: evt.target.value }, function () {
+					return _this2.calculateResult();
+				});
 			}
 		}, {
-			key: 'handleMonthsChange',
-			value: function handleMonthsChange(evt) {
-				this.setState({ months: evt.target.value, updateRequired: true });
+			key: 'handleYearsChange',
+			value: function handleYearsChange(evt) {
+				var _this3 = this;
+
+				this.setState({ years: evt.target.value }, function () {
+					return _this3.calculateResult();
+				});
 			}
 		}, {
 			key: 'handleYieldChange',
 			value: function handleYieldChange(evt) {
-				this.setState({ yield: evt.target.value / 100, updateRequired: true });
+				var _this4 = this;
+
+				this.setState({ yield: evt.target.value / 100 }, function () {
+					return _this4.calculateResult();
+				});
 			}
 		}, {
 			key: 'validateInputs',
 			value: function validateInputs() {
-				if (this.state.amount != null && this.state.months != null && this.state.yield != null) {
-					if (this.state.amount > 0 && this.state.months > 0 && this.state.yield > 0) {
-						if (this.state.yield >= 1) {
-							this.setState({ errorMessage: 'Yield percentage cannot be greater than 100' });
+				if (this.state.amount != null && this.state.years != null && this.state.yield != null) {
+					if (this.state.amount > 0 && this.state.years > 0 && this.state.yield > 0) {
+						if (this.state.yield > 1) {
+							this.setState({ errorMessage: 'Yield cannot be greater than 100' });
 							return false;
 						} else {
 							return true;
@@ -22898,32 +22909,26 @@
 		}, {
 			key: 'calculateResult',
 			value: function calculateResult() {
-				//console.log('calculating result');
 				if (this.validateInputs()) {
 					var currentState = this.state;
-					var result = parseFloat(currentState.amount * (Math.pow(1 + currentState.yield / 12, currentState.months) - 1) / (currentState.yield / 12));
-					var inflationAdjustedResult = parseFloat(result / Math.pow(1 + currentState.inflationRate, currentState.months / 12));
-
-					var delayCost = parseFloat(result - currentState.amount * (Math.pow(1 + currentState.yield / 12, currentState.months - currentState.delay) - 1) / (currentState.yield / 12));
-					var inflationAdjustedDelayCost = parseFloat((result - currentState.amount * (Math.pow(1 + currentState.yield / 12, currentState.months - currentState.delay) - 1) / (currentState.yield / 12)) / Math.pow(1 + currentState.inflationRate, (currentState.months - currentState.delay) / 12));
-
-					this.setState({ errorMessage: null, updateRequired: false, result: result.toFixed(2), inflationAdjustedResult: inflationAdjustedResult.toFixed(2), delayCost: delayCost.toFixed(2), inflationAdjustedDelayCost: inflationAdjustedDelayCost.toFixed(2) });
+					var result = parseFloat(currentState.amount * currentState.yield / 12 / (Math.pow(1 + currentState.yield / 12, currentState.years * 12) - 1));
+					this.setState({ result: result, errorMessage: null });
 				}
-			}
-		}, {
-			key: 'toggleTable',
-			value: function toggleTable() {
-				if ($('.viewMore table').css('display') == 'none') $('.viewMore table').show('blind');else $('.viewMore table').hide('blind');
 			}
 		}, {
 			key: 'render',
 			value: function render() {
+				var _this5 = this;
+
 				return _react2.default.createElement(
 					'div',
 					{ style: { background: 'linear-gradient( darkgrey, lightgrey, darkgrey)', padding: '10px', boxShadow: '0 0 10px black' } },
 					_react2.default.createElement(
 						'div',
 						null,
+						_react2.default.createElement('img', { src: 'resources/images/previous.svg', width: '30', className: 'hidden-sm hidden-md hidden-lg', style: { float: 'left', cursor: 'pointer' }, onClick: function onClick() {
+								return _this5.props.openApp(null);
+							} }),
 						_react2.default.createElement(
 							'h2',
 							{ style: { textAlign: 'center', borderBottom: '2px solid steelblue', paddingBottom: '10px', marginBottom: '10px' } },
@@ -22938,7 +22943,7 @@
 								_react2.default.createElement(
 									'b',
 									null,
-									'Monthly Amount'
+									'My Goal Amount'
 								),
 								_react2.default.createElement(
 									'div',
@@ -22948,49 +22953,62 @@
 										{ className: 'input-group-addon' },
 										'\u20B9'
 									),
-									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput ', placeholder: '5000', onChange: this.handleAmountChange })
+									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: '1500000', onChange: this.handleAmountChange })
 								)
 							)
 						),
 						_react2.default.createElement(
 							'div',
-							{ className: 'row' },
-							_react2.default.createElement(
-								'div',
-								{ className: 'col-md-12 col-sm-12 col-xs-12', style: { textAlign: 'left' } },
-								_react2.default.createElement(
-									'b',
-									null,
-									'No. of Months'
-								),
-								_react2.default.createElement(
-									'div',
-									{ className: 'input-group' },
-									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: '36', min: '1', max: '30', onChange: this.handleMonthsChange }),
-									_react2.default.createElement(
-										'span',
-										{ className: 'input-group-addon' },
-										'months'
-									)
-								)
-							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'row', style: { textAlign: 'left', marginBottom: '0' } },
+							{ className: 'row', style: { textAlign: 'left', marginBottom: '0px' } },
 							_react2.default.createElement(
 								'div',
 								{ className: 'col-md-12 col-sm-12 col-xs-12' },
 								_react2.default.createElement(
 									'b',
 									null,
-									'Expected Yield/Year'
+									'Number of years'
 								)
 							)
 						),
 						_react2.default.createElement(
 							'div',
-							{ className: 'row' },
+							{ className: 'row', style: { marginTop: '0px' } },
+							_react2.default.createElement(
+								'div',
+								{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', paddingLeft: '15px' } },
+								_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '30', onChange: this.handleYearsChange, value: this.state.years, style: { marginTop: '15px' } })
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'col-md-5 col-sm-5 col-xs-5' },
+								_react2.default.createElement(
+									'div',
+									{ className: 'input-group' },
+									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Number of years', min: '1', max: '30', onChange: this.handleYearsChange, value: this.state.years }),
+									_react2.default.createElement(
+										'span',
+										{ className: 'input-group-addon' },
+										'yrs'
+									)
+								)
+							)
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'row', style: { textAlign: 'left', marginBottom: '0px' } },
+							_react2.default.createElement(
+								'div',
+								{ className: 'col-md-12 col-sm-12 col-xs-12' },
+								_react2.default.createElement(
+									'b',
+									null,
+									'Average Yield'
+								)
+							)
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'row', style: { marginTop: '0px' } },
 							_react2.default.createElement(
 								'div',
 								{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', paddingLeft: '15px' } },
@@ -23002,7 +23020,7 @@
 								_react2.default.createElement(
 									'div',
 									{ className: 'input-group' },
-									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: '%', min: '1', max: '30', onChange: this.handleYieldChange, value: this.state.yield * 100 }),
+									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Average yield', onChange: this.handleYieldChange, value: this.state.yield * 100 }),
 									_react2.default.createElement(
 										'span',
 										{ className: 'input-group-addon' },
@@ -23019,123 +23037,25 @@
 					),
 					_react2.default.createElement(
 						'div',
-						{ style: { padding: '20px' } },
+						{ style: { padding: '10px' } },
 						_react2.default.createElement(
 							'div',
-							{ style: { color: 'steelblue', fontSize: 'x-large', textAlign: 'center' } },
+							{ style: { textAlign: 'center', color: 'steelblue', fontSize: 'x-large' } },
 							_react2.default.createElement(
 								'span',
 								{ style: { fontSize: 'large', color: 'black' } },
-								'Amount after term :'
+								'You need to invest '
 							),
 							_react2.default.createElement(
 								'span',
-								{ style: { color: 'black', margin: '0 10px 0 20px' } },
+								{ style: { color: 'black', margin: '0' } },
 								'\u20B9'
 							),
-							this.state.result,
+							this.state.result.toFixed(2),
 							_react2.default.createElement(
-								'div',
-								{ style: { fontSize: 'medium', color: 'black', marginTop: '10px' } },
-								'for an amount of \u20B9',
-								this.state.amount,
-								' with ',
-								this.state.yield * 100,
-								'% interest per annum for ',
-								this.state.months,
-								' months'
-							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'viewMore', style: { marginTop: '20px' } },
-							_react2.default.createElement(
-								'div',
-								{ style: { paddingBottom: '5px', marginBottom: '10px', fontWeight: 'bold', fontSize: 'medium', borderBottom: '2px solid steelblue' } },
-								'Inflation Adjustment',
-								_react2.default.createElement(
-									'span',
-									{ src: 'images/expand-arrows.svg', width: '25', onClick: this.toggleTable, id: 'viewMoreBtn' },
-									'\u2193'
-								)
-							),
-							_react2.default.createElement(
-								'table',
-								{ className: 'table' },
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Inflation Rate :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										this.state.inflationRate * 100,
-										' %'
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Inflation Adjusted Amount after term :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'\u20B9',
-										this.state.inflationAdjustedResult
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Delay in Investing (in months) :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										this.state.delay
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Cost of Delay :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'\u20B9',
-										this.state.delayCost
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Inflation Adjusted Cost of delay :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'\u20B9',
-										this.state.inflationAdjustedDelayCost
-									)
-								)
+								'span',
+								{ style: { fontSize: 'large', color: 'black' } },
+								' per month to achieve your goal'
 							)
 						)
 					)
@@ -23185,20 +23105,18 @@
 			var _this = _possibleConstructorReturn(this, (EMICalculator.__proto__ || Object.getPrototypeOf(EMICalculator)).call(this));
 
 			_this.handleAmountChange = _this.handleAmountChange.bind(_this);
-			_this.handleMonthsChange = _this.handleMonthsChange.bind(_this);
+			_this.handleYearsChange = _this.handleYearsChange.bind(_this);
 			_this.handleYieldChange = _this.handleYieldChange.bind(_this);
-			_this.validateInputs = _this.validateInputs.bind(_this);
 			_this.calculateResult = _this.calculateResult.bind(_this);
+			_this.graph = _this.graph.bind(_this);
+			_this.paintColumn = _this.paintColumn.bind(_this);
 			_this.state = {
-				amount: 5000,
-				months: 36,
-				yield: 0.18,
-				errorMessage: null,
+				amount: 500000,
+				years: 10,
+				yield: 0.1,
 				result: null,
-				inflationRate: 0.04,
-				inflationAdjustedResult: null,
-				delay: 24,
-				updateRequired: false
+				errorMessage: null,
+				graphData: null
 			};
 			return _this;
 		}
@@ -23208,33 +23126,46 @@
 			value: function componentWillMount() {
 				this.calculateResult();
 			}
-		}, {
-			key: 'componentDidUpdate',
-			value: function componentDidUpdate() {
-				if (this.state.updateRequired) this.calculateResult();
-			}
+			/*componentDidUpdate(){
+	  	if(this.state.graphData){
+	  		showGraph(this.state.graphData);
+	  	}
+	  }*/
+
 		}, {
 			key: 'handleAmountChange',
 			value: function handleAmountChange(evt) {
-				this.setState({ amount: evt.target.value, updateRequired: true });
+				var _this2 = this;
+
+				this.setState({ amount: evt.target.value }, function () {
+					return _this2.calculateResult();
+				});
 			}
 		}, {
-			key: 'handleMonthsChange',
-			value: function handleMonthsChange(evt) {
-				this.setState({ months: evt.target.value, updateRequired: true });
+			key: 'handleYearsChange',
+			value: function handleYearsChange(evt) {
+				var _this3 = this;
+
+				this.setState({ years: evt.target.value }, function () {
+					return _this3.calculateResult();
+				});
 			}
 		}, {
 			key: 'handleYieldChange',
 			value: function handleYieldChange(evt) {
-				this.setState({ yield: evt.target.value / 100, updateRequired: true });
+				var _this4 = this;
+
+				this.setState({ yield: evt.target.value / 100 }, function () {
+					return _this4.calculateResult();
+				});
 			}
 		}, {
 			key: 'validateInputs',
 			value: function validateInputs() {
-				if (this.state.amount != null && this.state.months != null && this.state.yield != null) {
-					if (this.state.amount > 0 && this.state.months > 0 && this.state.yield > 0) {
-						if (this.state.yield >= 1) {
-							this.setState({ errorMessage: 'Yield percentage cannot be greater than 100' });
+				if (this.state.amount != null && this.state.years != null && this.state.yield != null) {
+					if (this.state.amount > 0 && this.state.years > 0 && this.state.yield > 0) {
+						if (this.state.yield > 1) {
+							this.setState({ errorMessage: 'Yield cannot be greater than 100' });
 							return false;
 						} else {
 							return true;
@@ -23251,246 +23182,193 @@
 		}, {
 			key: 'calculateResult',
 			value: function calculateResult() {
-				//console.log('calculating result');
+				var _this5 = this;
+
 				if (this.validateInputs()) {
 					var currentState = this.state;
-					var result = parseFloat(currentState.amount * (Math.pow(1 + currentState.yield / 12, currentState.months) - 1) / (currentState.yield / 12));
-					var inflationAdjustedResult = parseFloat(result / Math.pow(1 + currentState.inflationRate, currentState.months / 12));
-
-					var delayCost = parseFloat(result - currentState.amount * (Math.pow(1 + currentState.yield / 12, currentState.months - currentState.delay) - 1) / (currentState.yield / 12));
-					var inflationAdjustedDelayCost = parseFloat((result - currentState.amount * (Math.pow(1 + currentState.yield / 12, currentState.months - currentState.delay) - 1) / (currentState.yield / 12)) / Math.pow(1 + currentState.inflationRate, (currentState.months - currentState.delay) / 12));
-
-					this.setState({ errorMessage: null, updateRequired: false, result: result.toFixed(2), inflationAdjustedResult: inflationAdjustedResult.toFixed(2), delayCost: delayCost.toFixed(2), inflationAdjustedDelayCost: inflationAdjustedDelayCost.toFixed(2) });
+					var result = parseFloat(currentState.amount * (currentState.yield / 12) * Math.pow(1 + currentState.yield / 12, currentState.years * 12) / (Math.pow(1 + currentState.yield / 12, currentState.years * 12) - 1));
+					this.setState({ result: result, errorMessage: null }, function () {
+						_this5.graph();
+					});
 				}
 			}
 		}, {
-			key: 'toggleTable',
-			value: function toggleTable() {
-				if ($('.viewMore table').css('display') == 'none') $('.viewMore table').show('blind');else $('.viewMore table').hide('blind');
+			key: 'graph',
+			value: function graph() {
+				var currentState = this.state;
+				var amount = currentState.amount;
+				var result = currentState.result;
+				var months = currentState.years * 12;
+				var arr = [];
+				for (var i = 0; i < months; i++) {
+					var interest = amount * currentState.yield / 12;
+					var principal = result - interest;
+					var balance = amount - principal;
+					var tempArr = [];
+					tempArr.push(i + 1);
+					tempArr.push(principal);
+					tempArr.push(interest);
+					tempArr.push(balance);
+					arr.push(tempArr);
+					amount = balance;
+				}
+				this.setState({ graphData: arr });
+			}
+		}, {
+			key: 'paintColumn',
+			value: function paintColumn(rowNum) {
+				var markup = [],
+				    graphData = this.state.graphData;
+				if (rowNum != -1) {
+					for (var i = 0; i < graphData.length; i++) {
+						var val = rowNum != 0 ? graphData[i][rowNum].toFixed(2) : graphData[i][rowNum];
+						markup.push(_react2.default.createElement(
+							'div',
+							null,
+							val
+						));
+					}
+				} else {
+					for (var i = 0; i < graphData.length; i++) {
+						markup.push(_react2.default.createElement(
+							'div',
+							null,
+							this.state.result.toFixed(2)
+						));
+					}
+				}
+				return markup;
 			}
 		}, {
 			key: 'render',
 			value: function render() {
+				var _this6 = this;
+
 				return _react2.default.createElement(
 					'div',
 					{ style: { background: 'linear-gradient( darkgrey, lightgrey, darkgrey)', padding: '10px', boxShadow: '0 0 10px black' } },
+					_react2.default.createElement('img', { src: 'resources/images/previous.svg', width: '30', className: 'hidden-sm hidden-md hidden-lg', style: { float: 'left', cursor: 'pointer' }, onClick: function onClick() {
+							return _this6.props.openApp(null);
+						} }),
+					_react2.default.createElement(
+						'h2',
+						{ style: { textAlign: 'center', borderBottom: '2px solid steelblue', paddingBottom: '10px', marginBottom: '10px' } },
+						'EMI Calculator'
+					),
 					_react2.default.createElement(
 						'div',
-						null,
-						_react2.default.createElement(
-							'h2',
-							{ style: { textAlign: 'center', borderBottom: '2px solid steelblue', paddingBottom: '10px', marginBottom: '10px' } },
-							'EMI Calculator'
-						),
+						{ className: 'row', style: { marginTop: '20px' } },
 						_react2.default.createElement(
 							'div',
-							{ className: 'row', style: { marginTop: '20px' } },
+							{ className: 'col-md-12 col-sm-12 col-xs-12', style: { textAlign: 'left' } },
 							_react2.default.createElement(
-								'div',
-								{ className: 'col-md-12 col-sm-12 col-xs-12', style: { textAlign: 'left' } },
-								_react2.default.createElement(
-									'b',
-									null,
-									'Monthly Amount'
-								),
-								_react2.default.createElement(
-									'div',
-									{ className: 'input-group' },
-									_react2.default.createElement(
-										'div',
-										{ className: 'input-group-addon' },
-										'\u20B9'
-									),
-									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput ', placeholder: '5000', onChange: this.handleAmountChange })
-								)
-							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'row' },
-							_react2.default.createElement(
-								'div',
-								{ className: 'col-md-12 col-sm-12 col-xs-12', style: { textAlign: 'left' } },
-								_react2.default.createElement(
-									'b',
-									null,
-									'No. of Months'
-								),
-								_react2.default.createElement(
-									'div',
-									{ className: 'input-group' },
-									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: '36', min: '1', max: '30', onChange: this.handleMonthsChange }),
-									_react2.default.createElement(
-										'span',
-										{ className: 'input-group-addon' },
-										'months'
-									)
-								)
-							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'row', style: { textAlign: 'left', marginBottom: '0' } },
-							_react2.default.createElement(
-								'div',
-								{ className: 'col-md-12 col-sm-12 col-xs-12' },
-								_react2.default.createElement(
-									'b',
-									null,
-									'Expected Yield/Year'
-								)
-							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'row' },
-							_react2.default.createElement(
-								'div',
-								{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', paddingLeft: '15px' } },
-								_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '30', onChange: this.handleYieldChange, value: this.state.yield * 100, style: { marginTop: '15px' } })
+								'b',
+								null,
+								'Loan Amount'
 							),
 							_react2.default.createElement(
 								'div',
-								{ className: 'col-md-5 col-sm-5 col-xs-5' },
+								{ className: 'input-group' },
 								_react2.default.createElement(
 									'div',
-									{ className: 'input-group' },
-									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: '%', min: '1', max: '30', onChange: this.handleYieldChange, value: this.state.yield * 100 }),
-									_react2.default.createElement(
-										'span',
-										{ className: 'input-group-addon' },
-										'%'
-									)
-								)
+									{ className: 'input-group-addon' },
+									'\u20B9'
+								),
+								_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: '500000', onChange: this.handleAmountChange })
 							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ style: { color: 'crimson', fontWeight: 'bold' } },
-							this.state.errorMessage
 						)
 					),
 					_react2.default.createElement(
 						'div',
-						{ style: { padding: '20px' } },
+						{ className: 'row', style: { textAlign: 'left', marginBottom: '0px' } },
 						_react2.default.createElement(
 							'div',
-							{ style: { color: 'steelblue', fontSize: 'x-large', textAlign: 'center' } },
+							{ className: 'col-md-12 col-sm-12 col-xs-12' },
 							_react2.default.createElement(
-								'span',
-								{ style: { fontSize: 'large', color: 'black' } },
-								'Amount after term :'
-							),
-							_react2.default.createElement(
-								'span',
-								{ style: { color: 'black', margin: '0 10px 0 20px' } },
-								'\u20B9'
-							),
-							this.state.result,
-							_react2.default.createElement(
-								'div',
-								{ style: { fontSize: 'medium', color: 'black', marginTop: '10px' } },
-								'for an amount of \u20B9',
-								this.state.amount,
-								' with ',
-								this.state.yield * 100,
-								'% interest per annum for ',
-								this.state.months,
-								' months'
+								'b',
+								null,
+								'Number of years'
 							)
+						)
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'row', style: { marginTop: '0px' } },
+						_react2.default.createElement(
+							'div',
+							{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', paddingLeft: '15px' } },
+							_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '30', onChange: this.handleYearsChange, value: this.state.years, style: { marginTop: '15px' } })
 						),
 						_react2.default.createElement(
 							'div',
-							{ className: 'viewMore', style: { marginTop: '20px' } },
+							{ className: 'col-md-5 col-sm-5 col-xs-5' },
 							_react2.default.createElement(
 								'div',
-								{ style: { paddingBottom: '5px', marginBottom: '10px', fontWeight: 'bold', fontSize: 'medium', borderBottom: '2px solid steelblue' } },
-								'Inflation Adjustment',
+								{ className: 'input-group' },
+								_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Number of years', min: '1', max: '30', onChange: this.handleYearsChange, value: this.state.years }),
 								_react2.default.createElement(
 									'span',
-									{ src: 'images/expand-arrows.svg', width: '25', onClick: this.toggleTable, id: 'viewMoreBtn' },
-									'\u2193'
-								)
-							),
-							_react2.default.createElement(
-								'table',
-								{ className: 'table' },
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Inflation Rate :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										this.state.inflationRate * 100,
-										' %'
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Inflation Adjusted Amount after term :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'\u20B9',
-										this.state.inflationAdjustedResult
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Delay in Investing (in months) :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										this.state.delay
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Cost of Delay :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'\u20B9',
-										this.state.delayCost
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Inflation Adjusted Cost of delay :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'\u20B9',
-										this.state.inflationAdjustedDelayCost
-									)
+									{ className: 'input-group-addon' },
+									'yrs'
 								)
 							)
 						)
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'row', style: { textAlign: 'left', marginBottom: '0px' } },
+						_react2.default.createElement(
+							'div',
+							{ className: 'col-md-12 col-sm-12 col-xs-12' },
+							_react2.default.createElement(
+								'b',
+								null,
+								'Loan Annual Percentage Rate'
+							)
+						)
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'row', style: { marginTop: '0px' } },
+						_react2.default.createElement(
+							'div',
+							{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', paddingLeft: '15px' } },
+							_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '30', onChange: this.handleYieldChange, value: this.state.yield * 100, style: { marginTop: '15px' } })
+						),
+						_react2.default.createElement(
+							'div',
+							{ className: 'col-md-5 col-sm-5 col-xs-5' },
+							_react2.default.createElement(
+								'div',
+								{ className: 'input-group' },
+								_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Loan Annual Percentage', onChange: this.handleYieldChange, value: this.state.yield * 100 }),
+								_react2.default.createElement(
+									'span',
+									{ className: 'input-group-addon' },
+									'%'
+								)
+							)
+						)
+					),
+					_react2.default.createElement(
+						'div',
+						{ style: { color: 'crimson', fontWeight: 'bold' } },
+						this.state.errorMessage
+					),
+					_react2.default.createElement(
+						'div',
+						{ style: { textAlign: 'center', color: 'steelblue', fontSize: 'x-large' } },
+						_react2.default.createElement(
+							'span',
+							{ style: { fontSize: 'large', color: 'black' } },
+							'Monthly Installment :'
+						),
+						_react2.default.createElement(
+							'span',
+							{ style: { color: 'black', margin: '0 10px 0 20px' } },
+							'\u20B9'
+						),
+						this.state.result.toFixed(2)
 					)
 				);
 			}
@@ -23537,21 +23415,26 @@
 
 			var _this = _possibleConstructorReturn(this, (RetirementPlanning.__proto__ || Object.getPrototypeOf(RetirementPlanning)).call(this));
 
-			_this.handleAmountChange = _this.handleAmountChange.bind(_this);
-			_this.handleMonthsChange = _this.handleMonthsChange.bind(_this);
-			_this.handleYieldChange = _this.handleYieldChange.bind(_this);
-			_this.validateInputs = _this.validateInputs.bind(_this);
-			_this.calculateResult = _this.calculateResult.bind(_this);
+			_this.handleCurrentCorpusChange = _this.handleCurrentCorpusChange.bind(_this);
+			_this.handleLifeStyle = _this.handleLifeStyle.bind(_this);
+			_this.handleMonthlySavings = _this.handleMonthlySavings.bind(_this);
+			_this.handleExpectedROR = _this.handleExpectedROR.bind(_this);
+			_this.handleCurrentAgeChange = _this.handleCurrentAgeChange.bind(_this);
+			_this.handleRetirementAgeChange = _this.handleRetirementAgeChange.bind(_this);
+			_this.handleInflationRateChange = _this.handleInflationRateChange.bind(_this);
+			_this.handleTaxRateChange = _this.handleTaxRateChange.bind(_this);
+			_this.handleRetirementBenefitChange = _this.handleRetirementBenefitChange.bind(_this);
 			_this.state = {
-				amount: 5000,
-				months: 36,
-				yield: 0.18,
-				errorMessage: null,
-				result: null,
-				inflationRate: 0.04,
-				inflationAdjustedResult: null,
-				delay: 24,
-				updateRequired: false
+				currentCorpus: 2000000,
+				lifeStyle: 300000,
+				monthlySavings: 100000,
+				expectedROR: 0.12,
+				currentAge: 50,
+				retirementAge: 65,
+				inflationRate: 0.05,
+				taxRate: .12,
+				retirementBenefit: 0,
+				result: null
 			};
 			return _this;
 		}
@@ -23562,74 +23445,93 @@
 				this.calculateResult();
 			}
 		}, {
-			key: 'componentDidUpdate',
-			value: function componentDidUpdate() {
-				if (this.state.updateRequired) this.calculateResult();
+			key: 'handleCurrentCorpusChange',
+			value: function handleCurrentCorpusChange(evt) {
+				var _this2 = this;
+
+				this.setState({ currentCorpus: evt.target.value }, function () {
+					return _this2.calculateResult();
+				});
 			}
 		}, {
-			key: 'handleAmountChange',
-			value: function handleAmountChange(evt) {
-				this.setState({ amount: evt.target.value, updateRequired: true });
+			key: 'handleLifeStyle',
+			value: function handleLifeStyle(evt) {
+				var _this3 = this;
+
+				this.setState({ lifeStyle: evt.target.value }, function () {
+					return _this3.calculateResult();
+				});
 			}
 		}, {
-			key: 'handleMonthsChange',
-			value: function handleMonthsChange(evt) {
-				this.setState({ months: evt.target.value, updateRequired: true });
+			key: 'handleMonthlySavings',
+			value: function handleMonthlySavings(evt) {
+				var _this4 = this;
+
+				this.setState({ monthlySavings: evt.target.value }, function () {
+					return _this4.calculateResult();
+				});
 			}
 		}, {
-			key: 'handleYieldChange',
-			value: function handleYieldChange(evt) {
-				this.setState({ yield: evt.target.value / 100, updateRequired: true });
+			key: 'handleExpectedROR',
+			value: function handleExpectedROR(evt) {
+				var _this5 = this;
+
+				this.setState({ expectedROR: evt.target.value / 100 }, function () {
+					return _this5.calculateResult();
+				});
 			}
 		}, {
-			key: 'validateInputs',
-			value: function validateInputs() {
-				if (this.state.amount != null && this.state.months != null && this.state.yield != null) {
-					if (this.state.amount > 0 && this.state.months > 0 && this.state.yield > 0) {
-						if (this.state.yield >= 1) {
-							this.setState({ errorMessage: 'Yield percentage cannot be greater than 100' });
-							return false;
-						} else {
-							return true;
-						}
-					} else {
-						this.setState({ errorMessage: 'Negative values detected' });
-						return false;
-					}
-				} else {
-					this.setState({ errorMessage: 'Empty field/(s) detected' });
-					return false;
+			key: 'handleCurrentAgeChange',
+			value: function handleCurrentAgeChange(evt) {
+				if (evt.target.value < this.state.retirementAge) {
+					this.setState({ currentAge: evt.target.value });
 				}
+			}
+		}, {
+			key: 'handleRetirementAgeChange',
+			value: function handleRetirementAgeChange(evt) {
+				if (evt.target.value > this.state.currentAge) {
+					this.setState({ retirementAge: evt.target.value });
+				}
+			}
+		}, {
+			key: 'handleInflationRateChange',
+			value: function handleInflationRateChange(evt) {
+				this.setState({ inflationRate: evt.target.value / 100 });
+			}
+		}, {
+			key: 'handleTaxRateChange',
+			value: function handleTaxRateChange(evt) {
+				this.setState({ taxRate: evt.target.value / 100 });
+			}
+		}, {
+			key: 'handleRetirementBenefitChange',
+			value: function handleRetirementBenefitChange(evt) {
+				this.setState({ retirementBenefit: evt.target.value });
 			}
 		}, {
 			key: 'calculateResult',
 			value: function calculateResult() {
-				//console.log('calculating result');
-				if (this.validateInputs()) {
+				if (this.state.currentCorpus != null && this.state.lifeStyle != null && this.state.monthlySavings != null) {
 					var currentState = this.state;
-					var result = parseFloat(currentState.amount * (Math.pow(1 + currentState.yield / 12, currentState.months) - 1) / (currentState.yield / 12));
-					var inflationAdjustedResult = parseFloat(result / Math.pow(1 + currentState.inflationRate, currentState.months / 12));
-
-					var delayCost = parseFloat(result - currentState.amount * (Math.pow(1 + currentState.yield / 12, currentState.months - currentState.delay) - 1) / (currentState.yield / 12));
-					var inflationAdjustedDelayCost = parseFloat((result - currentState.amount * (Math.pow(1 + currentState.yield / 12, currentState.months - currentState.delay) - 1) / (currentState.yield / 12)) / Math.pow(1 + currentState.inflationRate, (currentState.months - currentState.delay) / 12));
-
-					this.setState({ errorMessage: null, updateRequired: false, result: result.toFixed(2), inflationAdjustedResult: inflationAdjustedResult.toFixed(2), delayCost: delayCost.toFixed(2), inflationAdjustedDelayCost: inflationAdjustedDelayCost.toFixed(2) });
+					var result = parseFloat(currentState.currentCorpus * Math.pow(1 + currentState.expectedROR / 12, (currentState.retirementAge - currentState.currentAge) * 12) + currentState.monthlySavings * ((Math.pow(1 + currentState.expectedROR / 12, (currentState.retirementAge - currentState.currentAge) * 12) - 1) / (currentState.expectedROR / 12)) * (1 + currentState.expectedROR / 12) * (1 + currentState.expectedROR / 12));
+					this.setState({ result: result });
 				}
-			}
-		}, {
-			key: 'toggleTable',
-			value: function toggleTable() {
-				if ($('.viewMore table').css('display') == 'none') $('.viewMore table').show('blind');else $('.viewMore table').hide('blind');
 			}
 		}, {
 			key: 'render',
 			value: function render() {
+				var _this6 = this;
+
 				return _react2.default.createElement(
 					'div',
 					{ style: { background: 'linear-gradient( darkgrey, lightgrey, darkgrey)', padding: '10px', boxShadow: '0 0 10px black' } },
 					_react2.default.createElement(
 						'div',
 						null,
+						_react2.default.createElement('img', { src: 'resources/images/previous.svg', width: '30', className: 'hidden-sm hidden-md hidden-lg', style: { float: 'left', cursor: 'pointer' }, onClick: function onClick() {
+								return _this6.props.openApp(null);
+							} }),
 						_react2.default.createElement(
 							'h2',
 							{ style: { textAlign: 'center', borderBottom: '2px solid steelblue', paddingBottom: '10px', marginBottom: '10px' } },
@@ -23637,211 +23539,241 @@
 						),
 						_react2.default.createElement(
 							'div',
-							{ className: 'row', style: { marginTop: '20px' } },
+							{ style: { padding: '0 10px' } },
 							_react2.default.createElement(
 								'div',
-								{ className: 'col-md-12 col-sm-12 col-xs-12', style: { textAlign: 'left' } },
+								{ className: 'row' },
 								_react2.default.createElement(
 									'b',
 									null,
-									'Monthly Amount'
+									'Current Corpus'
+								),
+								_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Current Corpus', onChange: this.handleCurrentCorpusChange, value: this.state.currentCorpus })
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'row' },
+								_react2.default.createElement(
+									'b',
+									null,
+									'Current Monthly Expenditure'
+								),
+								_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Current Monthly Expenditure', min: '1', onChange: this.handleLifeStyle, value: this.state.lifeStyle })
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'row' },
+								_react2.default.createElement(
+									'b',
+									null,
+									'Current Monthly Savings'
+								),
+								_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Current Monthly Savings', min: '1', onChange: this.handleMonthlySavings, value: this.state.monthlySavings })
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'row' },
+								_react2.default.createElement(
+									'div',
+									null,
+									_react2.default.createElement(
+										'b',
+										null,
+										'Expected Rate of Return'
+									)
 								),
 								_react2.default.createElement(
 									'div',
-									{ className: 'input-group' },
+									null,
 									_react2.default.createElement(
 										'div',
-										{ className: 'input-group-addon' },
-										'\u20B9'
+										{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', padding: '0' } },
+										_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '100', onChange: this.handleExpectedROR, value: this.state.expectedROR * 100, style: { marginTop: '15px' } })
 									),
-									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput ', placeholder: '5000', onChange: this.handleAmountChange })
+									_react2.default.createElement(
+										'div',
+										{ className: 'col-md-5 col-sm-5 col-xs-5' },
+										_react2.default.createElement(
+											'div',
+											{ className: 'input-group' },
+											_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Expected Rate of Return', onChange: this.handleExpectedROR, value: this.state.expectedROR * 100 }),
+											_react2.default.createElement(
+												'span',
+												{ className: 'input-group-addon' },
+												'%'
+											)
+										)
+									)
 								)
-							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'row' },
+							),
 							_react2.default.createElement(
 								'div',
-								{ className: 'col-md-12 col-sm-12 col-xs-12', style: { textAlign: 'left' } },
+								{ className: 'row' },
 								_react2.default.createElement(
-									'b',
+									'div',
 									null,
-									'No. of Months'
+									_react2.default.createElement(
+										'b',
+										null,
+										'Current Age'
+									)
 								),
 								_react2.default.createElement(
 									'div',
-									{ className: 'input-group' },
-									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: '36', min: '1', max: '30', onChange: this.handleMonthsChange }),
+									null,
 									_react2.default.createElement(
-										'span',
-										{ className: 'input-group-addon' },
-										'months'
+										'div',
+										{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', padding: '0' } },
+										_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '40', max: '75', onChange: this.handleCurrentAgeChange, value: this.state.currentAge, style: { marginTop: '15px' } })
+									),
+									_react2.default.createElement(
+										'div',
+										{ className: 'col-md-5 col-sm-5 col-xs-5' },
+										_react2.default.createElement(
+											'div',
+											{ className: 'input-group' },
+											_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Current Age', onChange: this.handleCurrentAgeChange, value: this.state.currentAge }),
+											_react2.default.createElement(
+												'span',
+												{ className: 'input-group-addon' },
+												'yrs'
+											)
+										)
 									)
 								)
-							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'row', style: { textAlign: 'left', marginBottom: '0' } },
+							),
 							_react2.default.createElement(
 								'div',
-								{ className: 'col-md-12 col-sm-12 col-xs-12' },
+								{ className: 'row' },
+								_react2.default.createElement(
+									'div',
+									null,
+									_react2.default.createElement(
+										'b',
+										null,
+										'Expected Age of Retirement'
+									)
+								),
+								_react2.default.createElement(
+									'div',
+									null,
+									_react2.default.createElement(
+										'div',
+										{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', padding: '0' } },
+										_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '40', max: '75', onChange: this.handleRetirementAgeChange, value: this.state.retirementAge, style: { marginTop: '15px' } })
+									),
+									_react2.default.createElement(
+										'div',
+										{ className: 'col-md-5 col-sm-5 col-xs-5' },
+										_react2.default.createElement(
+											'div',
+											{ className: 'input-group' },
+											_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Expected Age of Retirement', onChange: this.handleRetirementAgeChange, value: this.state.retirementAge }),
+											_react2.default.createElement(
+												'span',
+												{ className: 'input-group-addon' },
+												'yrs'
+											)
+										)
+									)
+								)
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'row' },
+								_react2.default.createElement(
+									'div',
+									null,
+									_react2.default.createElement(
+										'b',
+										null,
+										'Inflation Rate'
+									)
+								),
+								_react2.default.createElement(
+									'div',
+									null,
+									_react2.default.createElement(
+										'div',
+										{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', padding: '0' } },
+										_react2.default.createElement('input', { type: 'range', step: '1', min: '0', max: '100', onChange: this.handleInflationRateChange, value: this.state.inflationRate * 100, style: { marginTop: '15px' } })
+									),
+									_react2.default.createElement(
+										'div',
+										{ className: 'col-md-5 col-sm-5 col-xs-5' },
+										_react2.default.createElement(
+											'div',
+											{ className: 'input-group' },
+											_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Inflation Rate', onChange: this.handleInflationRateChange, value: this.state.inflationRate * 100 }),
+											_react2.default.createElement(
+												'span',
+												{ className: 'input-group-addon' },
+												'%'
+											)
+										)
+									)
+								)
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'row' },
+								_react2.default.createElement(
+									'div',
+									null,
+									_react2.default.createElement(
+										'b',
+										null,
+										'Tax Rate'
+									)
+								),
+								_react2.default.createElement(
+									'div',
+									null,
+									_react2.default.createElement(
+										'div',
+										{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', padding: '0' } },
+										_react2.default.createElement('input', { type: 'range', step: '1', min: '0', max: '100', onChange: this.handleTaxRateChange, value: this.state.taxRate * 100, style: { marginTop: '15px' } })
+									),
+									_react2.default.createElement(
+										'div',
+										{ className: 'col-md-5 col-sm-5 col-xs-5' },
+										_react2.default.createElement(
+											'div',
+											{ className: 'input-group' },
+											_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Tax Rate', onChange: this.handleTaxRateChange, value: this.state.taxRate * 100 }),
+											_react2.default.createElement(
+												'span',
+												{ className: 'input-group-addon' },
+												'%'
+											)
+										)
+									)
+								)
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'row' },
 								_react2.default.createElement(
 									'b',
 									null,
-									'Expected Yield/Year'
-								)
-							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'row' },
-							_react2.default.createElement(
-								'div',
-								{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', paddingLeft: '15px' } },
-								_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '30', onChange: this.handleYieldChange, value: this.state.yield * 100, style: { marginTop: '15px' } })
+									'Retirement Benefit'
+								),
+								_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Retirement Benefit', onChange: this.handleRetirementBenefitChange, value: this.state.retirementBenefit })
 							),
 							_react2.default.createElement(
 								'div',
-								{ className: 'col-md-5 col-sm-5 col-xs-5' },
-								_react2.default.createElement(
-									'div',
-									{ className: 'input-group' },
-									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: '%', min: '1', max: '30', onChange: this.handleYieldChange, value: this.state.yield * 100 }),
-									_react2.default.createElement(
-										'span',
-										{ className: 'input-group-addon' },
-										'%'
-									)
-								)
-							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ style: { color: 'crimson', fontWeight: 'bold' } },
-							this.state.errorMessage
-						)
-					),
-					_react2.default.createElement(
-						'div',
-						{ style: { padding: '20px' } },
-						_react2.default.createElement(
-							'div',
-							{ style: { color: 'steelblue', fontSize: 'x-large', textAlign: 'center' } },
-							_react2.default.createElement(
-								'span',
-								{ style: { fontSize: 'large', color: 'black' } },
-								'Amount after term :'
-							),
-							_react2.default.createElement(
-								'span',
-								{ style: { color: 'black', margin: '0 10px 0 20px' } },
-								'\u20B9'
-							),
-							this.state.result,
-							_react2.default.createElement(
-								'div',
-								{ style: { fontSize: 'medium', color: 'black', marginTop: '10px' } },
-								'for an amount of \u20B9',
-								this.state.amount,
-								' with ',
-								this.state.yield * 100,
-								'% interest per annum for ',
-								this.state.months,
-								' months'
-							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'viewMore', style: { marginTop: '20px' } },
-							_react2.default.createElement(
-								'div',
-								{ style: { paddingBottom: '5px', marginBottom: '10px', fontWeight: 'bold', fontSize: 'medium', borderBottom: '2px solid steelblue' } },
-								'Inflation Adjustment',
+								{ style: { textAlign: 'center', color: 'steelblue', fontSize: 'x-large' } },
 								_react2.default.createElement(
 									'span',
-									{ src: 'images/expand-arrows.svg', width: '25', onClick: this.toggleTable, id: 'viewMoreBtn' },
-									'\u2193'
-								)
-							),
-							_react2.default.createElement(
-								'table',
-								{ className: 'table' },
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Inflation Rate :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										this.state.inflationRate * 100,
-										' %'
-									)
+									{ style: { fontSize: 'large', color: 'black' } },
+									'Monthly Installment :'
 								),
 								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Inflation Adjusted Amount after term :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'\u20B9',
-										this.state.inflationAdjustedResult
-									)
+									'span',
+									{ style: { color: 'black', margin: '0 10px 0 20px' } },
+									'\u20B9'
 								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Delay in Investing (in months) :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										this.state.delay
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Cost of Delay :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'\u20B9',
-										this.state.delayCost
-									)
-								),
-								_react2.default.createElement(
-									'tr',
-									null,
-									_react2.default.createElement(
-										'td',
-										null,
-										'Inflation Adjusted Cost of delay :'
-									),
-									_react2.default.createElement(
-										'td',
-										null,
-										'\u20B9',
-										this.state.inflationAdjustedDelayCost
-									)
-								)
+								this.state.result.toFixed(2)
 							)
 						)
 					)
@@ -23898,7 +23830,7 @@
 
 				return _react2.default.createElement(
 					'div',
-					{ id: 'sideMenuContainer' },
+					{ id: 'sideMenuContainer', className: 'hidden-xs' },
 					_react2.default.createElement(
 						'div',
 						{ onClick: function onClick() {

@@ -23,11 +23,11 @@ class MainContainer extends Component {
 	render(){
 		var output, selectedCalculator;
 		if(this.state.selectedMenu!=null){
-			if(this.state.selectedMenu===1) selectedCalculator = <SIPCalculator />
-			else if(this.state.selectedMenu===2) selectedCalculator = <FDCalculator />
-			else if(this.state.selectedMenu===3) selectedCalculator = <GoalCalculator />
-			else if(this.state.selectedMenu===4) selectedCalculator = <EMICalculator />
-			else if(this.state.selectedMenu===5) selectedCalculator = <RetirementPlanning />
+			if(this.state.selectedMenu===1) selectedCalculator = <SIPCalculator openApp={this.openApp}/>
+			else if(this.state.selectedMenu===2) selectedCalculator = <FDCalculator openApp={this.openApp} />
+			else if(this.state.selectedMenu===3) selectedCalculator = <GoalCalculator openApp={this.openApp} />
+			else if(this.state.selectedMenu===4) selectedCalculator = <EMICalculator openApp={this.openApp} />
+			else if(this.state.selectedMenu===5) selectedCalculator = <RetirementPlanning openApp={this.openApp} />
 			output = (
 				<div className='row'>
 					<div className='col-md-8'>

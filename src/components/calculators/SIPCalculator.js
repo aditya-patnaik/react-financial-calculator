@@ -44,17 +44,17 @@ class SIPCalculator extends Component{
 		if( this.state.amount != null && this.state.months != null && this.state.yield != null ){
 			if( this.state.amount > 0 && this.state.months > 0 && this.state.yield > 0 ) {
 				if( this.state.yield >= 1 ){
-					this.setState({ errorMessage: 'Yield percentage cannot be greater than 100' });
+					this.setState({ errorMessage: 'Yield percentage cannot be greater than 100', updateRequired: false });
 					return false;
 				} else{
 					return true;
 				}
 			} else {
-				this.setState({ errorMessage: 'Negative values detected' });
+				this.setState({ errorMessage: 'Negative values detected', updateRequired: false });
 				return false;
 			}
 		} else{
-			this.setState({ errorMessage: 'Empty field/(s) detected' });
+			this.setState({ errorMessage: 'Empty field/(s) detected', updateRequired: false });
 			return false;
 		}
 	}
@@ -81,6 +81,7 @@ class SIPCalculator extends Component{
 		return (
 			<div style={{ background: 'linear-gradient( darkgrey, lightgrey, darkgrey)', padding: '10px', boxShadow: '0 0 10px black' }}>
 				<div>
+					<img src="resources/images/previous.svg" width="30" className='hidden-sm hidden-md hidden-lg' style={{float: 'left', cursor: 'pointer'}} onClick={()=>this.props.openApp(null)}/>
 					<h2 style={{textAlign: 'center', borderBottom: '2px solid steelblue', paddingBottom: '10px', marginBottom: '10px' }}>SIP Calculator</h2>
 					<div className="row" style={{ marginTop: '20px' }}>
 						<div className="col-md-12 col-sm-12 col-xs-12" style={{ textAlign: 'left' }}>
@@ -109,7 +110,7 @@ class SIPCalculator extends Component{
 						</div>
 						<div className="col-md-5 col-sm-5 col-xs-5">
 							<div className="input-group">
-								<input type="number" className="form-control calulatorInput" placeholder="%" min="1" max="30" onChange={this.handleYieldChange} value={(this.state.yield*100)} />
+								<input type="number" className="form-control calulatorInput" placeholder="%" min="1" max="30" onChange={this.handleYieldChange} value={this.state.yield*100} />
 								<span className="input-group-addon">%</span>
 							</div>
 						</div>
@@ -119,11 +120,11 @@ class SIPCalculator extends Component{
 
 				<div style={{padding: '20px'}}>
 					<div style={{ color: 'steelblue', fontSize: 'x-large', textAlign: 'center' }}>
-						<span style={{fontSize: 'large', color: 'black'}}>Amount after term :</span>
+						<span style={{fontSize: 'large', color: 'black'}}>Amount at maturity :</span>
 						<span style={{color: 'black', margin: '0 10px 0 20px'}}>&#8377;</span>
 						{this.state.result}
 						<div style={{fontSize: 'medium', color: 'black', marginTop: '10px'}}>
-							for an amount of ₹{this.state.amount} with {this.state.yield*100}% interest per annum for {this.state.months} months
+							when an amount of ₹{this.state.amount} is invested with {this.state.yield*100}% interest per annum for {this.state.months} months
 						</div>
 					</div>
 					<div className="viewMore" style={{ marginTop: '20px' }}>

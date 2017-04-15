@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 class SideMenu extends Component{
 	render(){
 		return (
-			<div id='sideMenuContainer'>
+			<div id='sideMenuContainer' className='hidden-xs'>
 				<div onClick={()=>this.props.openApp(1)} className='row' style={{borderTop: '1px solid lightgrey'}}>
 					{ (this.props.selectedMenu===1) ? <span style={{float: 'left', marginRight: '10px'}}>&rarr;</span> : <span></span>}
 					SIP Calculator
