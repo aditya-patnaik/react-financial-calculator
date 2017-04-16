@@ -21960,9 +21960,11 @@
 				amount: 5000,
 				months: 36,
 				yield: 0.18,
+				yieldToDisplay: 18,
 				errorMessage: null,
 				result: null,
 				inflationRate: 0,
+				inflationRateToDisplay: 0,
 				inflationAdjustedResult: null,
 				delay: 24,
 				updateRequired: false
@@ -21993,12 +21995,12 @@
 		}, {
 			key: 'handleYieldChange',
 			value: function handleYieldChange(evt) {
-				this.setState({ yield: evt.target.value / 100, updateRequired: true });
+				this.setState({ yield: evt.target.value / 100, yieldToDisplay: evt.target.value, updateRequired: true });
 			}
 		}, {
 			key: 'handleInflationRateChange',
 			value: function handleInflationRateChange(evt) {
-				this.setState({ inflationRate: (evt.target.value / 100).toFixed(2), updateRequired: true });
+				this.setState({ inflationRate: (evt.target.value / 100).toFixed(2), inflationRateToDisplay: evt.target.value, updateRequired: true });
 			}
 		}, {
 			key: 'validateInputs',
@@ -22124,7 +22126,7 @@
 							_react2.default.createElement(
 								'div',
 								{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', paddingLeft: '15px' } },
-								_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '30', onChange: this.handleYieldChange, value: this.state.yield * 100, style: { marginTop: '15px' } })
+								_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '30', onChange: this.handleYieldChange, value: this.state.yieldToDisplay, style: { marginTop: '15px' } })
 							),
 							_react2.default.createElement(
 								'div',
@@ -22132,7 +22134,7 @@
 								_react2.default.createElement(
 									'div',
 									{ className: 'input-group' },
-									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: '%', min: '1', max: '30', onChange: this.handleYieldChange, value: this.state.yield * 100 }),
+									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: '%', min: '1', max: '30', onChange: this.handleYieldChange, value: this.state.yieldToDisplay }),
 									_react2.default.createElement(
 										'span',
 										{ className: 'input-group-addon' },
@@ -22170,7 +22172,7 @@
 								'when an amount of \u20B9',
 								this.state.amount,
 								' is invested with ',
-								this.state.yield * 100,
+								this.state.yieldToDisplay,
 								'% interest per annum for ',
 								this.state.months,
 								' months'
@@ -22206,7 +22208,7 @@
 										_react2.default.createElement(
 											'td',
 											{ style: { borderTop: 'none' } },
-											_react2.default.createElement('input', { type: 'number', className: 'calulatorInput', placeholder: '%', min: '0', max: '30', onChange: this.handleInflationRateChange, value: this.state.inflationRate * 100, style: { textAlign: 'right' } }),
+											_react2.default.createElement('input', { type: 'number', className: 'calulatorInput', placeholder: '%', min: '0', max: '30', onChange: this.handleInflationRateChange, value: this.state.inflationRateToDisplay, style: { textAlign: 'right' } }),
 											'%'
 										)
 									),
@@ -22330,6 +22332,7 @@
 				amount: 100000,
 				months: 36,
 				rate: 0.065,
+				rateToDisplay: 6.5,
 				compoundPeriod: 1,
 				result: null,
 				errorMessage: null,
@@ -22338,6 +22341,7 @@
 				returnAfterTax: null,
 				yieldAfterTax: null,
 				inflationRate: 0,
+				inflationRateToDisplay: 0,
 				inflationAdjustedReturn: null,
 				inflationAdjustedActualYield: null,
 				inflationAdjustedAnnualYield: null
@@ -22373,7 +22377,7 @@
 			value: function handleRateChange(evt) {
 				var _this4 = this;
 
-				this.setState({ rate: evt.target.value / 100 }, function () {
+				this.setState({ rate: evt.target.value / 100, rateToDisplay: evt.target.value }, function () {
 					return _this4.calculateResult();
 				});
 			}
@@ -22400,7 +22404,7 @@
 			value: function handleInflationRateChange(evt) {
 				var _this7 = this;
 
-				this.setState({ inflationRate: (evt.target.value / 100).toFixed(2) }, function () {
+				this.setState({ inflationRate: (evt.target.value / 100).toFixed(2), inflationRateToDisplay: evt.target.value }, function () {
 					return _this7.calculateInflationAdjustment();
 				});
 			}
@@ -22517,7 +22521,7 @@
 							_react2.default.createElement(
 								'div',
 								{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', paddingLeft: '15px' } },
-								_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '30', onChange: this.handleRateChange, value: this.state.rate * 100, style: { marginTop: '15px' } })
+								_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '30', onChange: this.handleRateChange, value: this.state.rateToDisplay, style: { marginTop: '15px' } })
 							),
 							_react2.default.createElement(
 								'div',
@@ -22525,7 +22529,7 @@
 								_react2.default.createElement(
 									'div',
 									{ className: 'input-group' },
-									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Investment Rate', min: '1', max: '30', onChange: this.handleRateChange, value: this.state.rate * 100 }),
+									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Investment Rate', min: '1', max: '30', onChange: this.handleRateChange, value: this.state.rateToDisplay }),
 									_react2.default.createElement(
 										'span',
 										{ className: 'input-group-addon' },
@@ -22742,7 +22746,7 @@
 											_react2.default.createElement(
 												'td',
 												null,
-												_react2.default.createElement('input', { type: 'number', className: 'calulatorInput', placeholder: '%', min: '0', max: '30', onChange: this.handleInflationRateChange, value: this.state.inflationRate * 100, style: { textAlign: 'right' } }),
+												_react2.default.createElement('input', { type: 'number', className: 'calulatorInput', placeholder: '%', min: '0', max: '30', onChange: this.handleInflationRateChange, value: this.state.inflationRateToDisplay, style: { textAlign: 'right' } }),
 												'%'
 											)
 										),
@@ -22848,6 +22852,7 @@
 				amount: 1500000,
 				years: 5,
 				yield: 0.1,
+				yieldToDisplay: 10,
 				result: null,
 				errorMessage: null
 			};
@@ -22882,7 +22887,7 @@
 			value: function handleYieldChange(evt) {
 				var _this4 = this;
 
-				this.setState({ yield: evt.target.value / 100 }, function () {
+				this.setState({ yield: evt.target.value / 100, yieldToDisplay: evt.target.value }, function () {
 					return _this4.calculateResult();
 				});
 			}
@@ -23012,7 +23017,7 @@
 							_react2.default.createElement(
 								'div',
 								{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', paddingLeft: '15px' } },
-								_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '30', onChange: this.handleYieldChange, value: this.state.yield * 100, style: { marginTop: '15px' } })
+								_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '30', onChange: this.handleYieldChange, value: this.state.yieldToDisplay, style: { marginTop: '15px' } })
 							),
 							_react2.default.createElement(
 								'div',
@@ -23020,7 +23025,7 @@
 								_react2.default.createElement(
 									'div',
 									{ className: 'input-group' },
-									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Average yield', onChange: this.handleYieldChange, value: this.state.yield * 100 }),
+									_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Average yield', onChange: this.handleYieldChange, value: this.state.yieldToDisplay }),
 									_react2.default.createElement(
 										'span',
 										{ className: 'input-group-addon' },
@@ -23114,6 +23119,7 @@
 				amount: 500000,
 				years: 10,
 				yield: 0.1,
+				yieldToDisplay: 10,
 				result: null,
 				errorMessage: null,
 				graphData: null
@@ -23155,7 +23161,7 @@
 			value: function handleYieldChange(evt) {
 				var _this4 = this;
 
-				this.setState({ yield: evt.target.value / 100 }, function () {
+				this.setState({ yield: evt.target.value / 100, yieldToDisplay: evt.target.value }, function () {
 					return _this4.calculateResult();
 				});
 			}
@@ -23333,7 +23339,7 @@
 						_react2.default.createElement(
 							'div',
 							{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', paddingLeft: '15px' } },
-							_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '30', onChange: this.handleYieldChange, value: this.state.yield * 100, style: { marginTop: '15px' } })
+							_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '30', onChange: this.handleYieldChange, value: this.state.yieldToDisplay, style: { marginTop: '15px' } })
 						),
 						_react2.default.createElement(
 							'div',
@@ -23341,7 +23347,7 @@
 							_react2.default.createElement(
 								'div',
 								{ className: 'input-group' },
-								_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Loan Annual Percentage', onChange: this.handleYieldChange, value: this.state.yield * 100 }),
+								_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Loan Annual Percentage', onChange: this.handleYieldChange, value: this.state.yieldToDisplay }),
 								_react2.default.createElement(
 									'span',
 									{ className: 'input-group-addon' },
@@ -23429,10 +23435,13 @@
 				lifeStyle: 300000,
 				monthlySavings: 100000,
 				expectedROR: 0.12,
+				expectedRORToDisplay: 12,
 				currentAge: 50,
 				retirementAge: 65,
 				inflationRate: 0.05,
+				inflationRateToDisplay: 5,
 				taxRate: .12,
+				taxRateToDisplay: 12,
 				retirementBenefit: 0,
 				result: null
 			};
@@ -23476,7 +23485,7 @@
 			value: function handleExpectedROR(evt) {
 				var _this5 = this;
 
-				this.setState({ expectedROR: evt.target.value / 100 }, function () {
+				this.setState({ expectedROR: evt.target.value / 100, expectedRORToDisplay: evt.target.value }, function () {
 					return _this5.calculateResult();
 				});
 			}
@@ -23497,12 +23506,12 @@
 		}, {
 			key: 'handleInflationRateChange',
 			value: function handleInflationRateChange(evt) {
-				this.setState({ inflationRate: evt.target.value / 100 });
+				this.setState({ inflationRate: evt.target.value / 100, inflationRateToDisplay: evt.target.value });
 			}
 		}, {
 			key: 'handleTaxRateChange',
 			value: function handleTaxRateChange(evt) {
-				this.setState({ taxRate: evt.target.value / 100 });
+				this.setState({ taxRate: evt.target.value / 100, taxRateToDisplay: evt.target.value });
 			}
 		}, {
 			key: 'handleRetirementBenefitChange',
@@ -23588,7 +23597,7 @@
 									_react2.default.createElement(
 										'div',
 										{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', padding: '0' } },
-										_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '100', onChange: this.handleExpectedROR, value: this.state.expectedROR * 100, style: { marginTop: '15px' } })
+										_react2.default.createElement('input', { id: 'yieldRange', type: 'range', step: '1', min: '0', max: '100', onChange: this.handleExpectedROR, value: this.state.expectedRORToDisplay, style: { marginTop: '15px' } })
 									),
 									_react2.default.createElement(
 										'div',
@@ -23596,7 +23605,7 @@
 										_react2.default.createElement(
 											'div',
 											{ className: 'input-group' },
-											_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Expected Rate of Return', onChange: this.handleExpectedROR, value: this.state.expectedROR * 100 }),
+											_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Expected Rate of Return', onChange: this.handleExpectedROR, value: this.state.expectedRORToDisplay }),
 											_react2.default.createElement(
 												'span',
 												{ className: 'input-group-addon' },
@@ -23696,7 +23705,7 @@
 									_react2.default.createElement(
 										'div',
 										{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', padding: '0' } },
-										_react2.default.createElement('input', { type: 'range', step: '1', min: '0', max: '100', onChange: this.handleInflationRateChange, value: this.state.inflationRate * 100, style: { marginTop: '15px' } })
+										_react2.default.createElement('input', { type: 'range', step: '1', min: '0', max: '100', onChange: this.handleInflationRateChange, value: this.state.inflationRateToDisplay, style: { marginTop: '15px' } })
 									),
 									_react2.default.createElement(
 										'div',
@@ -23704,7 +23713,7 @@
 										_react2.default.createElement(
 											'div',
 											{ className: 'input-group' },
-											_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Inflation Rate', onChange: this.handleInflationRateChange, value: this.state.inflationRate * 100 }),
+											_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Inflation Rate', onChange: this.handleInflationRateChange, value: this.state.inflationRateToDisplay }),
 											_react2.default.createElement(
 												'span',
 												{ className: 'input-group-addon' },
@@ -23732,7 +23741,7 @@
 									_react2.default.createElement(
 										'div',
 										{ className: 'col-md-7 col-sm-7 col-xs-7', style: { textAlign: 'left', padding: '0' } },
-										_react2.default.createElement('input', { type: 'range', step: '1', min: '0', max: '100', onChange: this.handleTaxRateChange, value: this.state.taxRate * 100, style: { marginTop: '15px' } })
+										_react2.default.createElement('input', { type: 'range', step: '1', min: '0', max: '100', onChange: this.handleTaxRateChange, value: this.state.taxRateToDisplay, style: { marginTop: '15px' } })
 									),
 									_react2.default.createElement(
 										'div',
@@ -23740,7 +23749,7 @@
 										_react2.default.createElement(
 											'div',
 											{ className: 'input-group' },
-											_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Tax Rate', onChange: this.handleTaxRateChange, value: this.state.taxRate * 100 }),
+											_react2.default.createElement('input', { type: 'number', className: 'form-control calulatorInput', placeholder: 'Tax Rate', onChange: this.handleTaxRateChange, value: this.state.taxRateToDisplay }),
 											_react2.default.createElement(
 												'span',
 												{ className: 'input-group-addon' },
@@ -23766,7 +23775,7 @@
 								_react2.default.createElement(
 									'span',
 									{ style: { fontSize: 'large', color: 'black' } },
-									'Monthly Installment :'
+									'FV of Investment before Inflation and taxes :'
 								),
 								_react2.default.createElement(
 									'span',

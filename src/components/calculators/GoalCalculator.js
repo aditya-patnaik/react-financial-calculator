@@ -11,6 +11,7 @@ class GoalCalculator extends Component{
 			amount: 1500000,
 			years: 5,
 			yield: 0.1,
+			yieldToDisplay: 10,
 			result: null,
 			errorMessage: null
 		}
@@ -25,7 +26,7 @@ class GoalCalculator extends Component{
 		this.setState({ years: evt.target.value}, () => this.calculateResult());
 	}
 	handleYieldChange(evt){
-		this.setState({ yield: evt.target.value/100}, () => this.calculateResult());
+		this.setState({ yield: evt.target.value/100, yieldToDisplay: evt.target.value }, () => this.calculateResult());
 	}
 	validateInputs(){
 		if( this.state.amount != null && this.state.years != null && this.state.yield != null ){
@@ -88,11 +89,11 @@ class GoalCalculator extends Component{
 							</div>
 							<div className="row" style={{marginTop: '0px'}}>
 								<div className="col-md-7 col-sm-7 col-xs-7" style={{textAlign: 'left', paddingLeft: '15px'}}>
-									<input id="yieldRange" type="range" step="1" min="0" max="30" onChange={this.handleYieldChange} value={(this.state.yield*100)} style={{marginTop: '15px'}}/>
+									<input id="yieldRange" type="range" step="1" min="0" max="30" onChange={this.handleYieldChange} value={(this.state.yieldToDisplay)} style={{marginTop: '15px'}}/>
 								</div>
 								<div className="col-md-5 col-sm-5 col-xs-5">
 									<div className="input-group">
-										<input type="number" className="form-control calulatorInput" placeholder="Average yield" onChange={this.handleYieldChange} value={this.state.yield*100}/>
+										<input type="number" className="form-control calulatorInput" placeholder="Average yield" onChange={this.handleYieldChange} value={this.state.yieldToDisplay}/>
 										<span className="input-group-addon">%</span>
 									</div>
 								</div>

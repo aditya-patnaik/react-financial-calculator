@@ -14,9 +14,11 @@ class SIPCalculator extends Component{
 			amount: 5000,
 			months: 36,
 			yield: 0.18,
+			yieldToDisplay: 18,
 			errorMessage: null,
 			result: null,
 			inflationRate: 0,
+			inflationRateToDisplay: 0,
 			inflationAdjustedResult: null,
 			delay: 24,
 			updateRequired: false
@@ -35,10 +37,10 @@ class SIPCalculator extends Component{
 		this.setState({ months: evt.target.value, updateRequired: true });
 	}
 	handleYieldChange(evt){
-		this.setState({ yield: evt.target.value/100, updateRequired: true });
+		this.setState({ yield: evt.target.value/100, yieldToDisplay: evt.target.value, updateRequired: true });
 	}
 	handleInflationRateChange(evt){
-		this.setState({ inflationRate: (evt.target.value/100).toFixed(2), updateRequired: true });
+		this.setState({ inflationRate: (evt.target.value/100).toFixed(2), inflationRateToDisplay: evt.target.value, updateRequired: true });
 	}
 	validateInputs(){
 		if( this.state.amount != null && this.state.months != null && this.state.yield != null ){
@@ -106,11 +108,11 @@ class SIPCalculator extends Component{
 					</div>
 					<div className="row" style={{ marginTop: '0' }}>
 						<div className="col-md-7 col-sm-7 col-xs-7" style={{textAlign: 'left', paddingLeft: '15px'}}>
-							<input id="yieldRange" type="range" step="1" min="0" max="30" onChange={this.handleYieldChange} value={(this.state.yield*100)} style={{ marginTop: '15px' }}/>
+							<input id="yieldRange" type="range" step="1" min="0" max="30" onChange={this.handleYieldChange} value={this.state.yieldToDisplay} style={{ marginTop: '15px' }}/>
 						</div>
 						<div className="col-md-5 col-sm-5 col-xs-5">
 							<div className="input-group">
-								<input type="number" className="form-control calulatorInput" placeholder="%" min="1" max="30" onChange={this.handleYieldChange} value={this.state.yield*100} />
+								<input type="number" className="form-control calulatorInput" placeholder="%" min="1" max="30" onChange={this.handleYieldChange} value={this.state.yieldToDisplay} />
 								<span className="input-group-addon">%</span>
 							</div>
 						</div>
@@ -124,7 +126,7 @@ class SIPCalculator extends Component{
 						<span style={{color: 'black', margin: '0 10px 0 20px'}}>&#8377;</span>
 						{this.state.result}
 						<div style={{fontSize: 'medium', color: 'black', marginTop: '10px'}}>
-							when an amount of ₹{this.state.amount} is invested with {this.state.yield*100}% interest per annum for {this.state.months} months
+							when an amount of ₹{this.state.amount} is invested with {this.state.yieldToDisplay}% interest per annum for {this.state.months} months
 						</div>
 					</div>
 					<div className="viewMore" style={{ marginTop: '20px' }}>
@@ -136,7 +138,7 @@ class SIPCalculator extends Component{
 							<tbody>
 							<tr>
 								<td style={{borderTop: 'none'}}>Inflation Rate :</td>
-								<td style={{borderTop: 'none'}}><input type="number" className="calulatorInput" placeholder="%" min="0" max="30" onChange={this.handleInflationRateChange} value={(this.state.inflationRate*100)} style={{textAlign: 'right'}} />%</td>
+								<td style={{borderTop: 'none'}}><input type="number" className="calulatorInput" placeholder="%" min="0" max="30" onChange={this.handleInflationRateChange} value={(this.state.inflationRateToDisplay)} style={{textAlign: 'right'}} />%</td>
 							</tr>
 							<tr>
 								<td>Inflation Adjusted Amount after term :</td>

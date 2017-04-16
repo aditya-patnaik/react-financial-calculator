@@ -16,6 +16,7 @@ class FDCalculator extends Component{
 			amount: 100000,
 			months: 36,
 			rate: 0.065,
+			rateToDisplay: 6.5,
 			compoundPeriod: 1,
 			result: null,
 			errorMessage: null,
@@ -24,6 +25,7 @@ class FDCalculator extends Component{
 			returnAfterTax: null,
 			yieldAfterTax: null,
 			inflationRate: 0,
+			inflationRateToDisplay: 0,
 			inflationAdjustedReturn: null,
 			inflationAdjustedActualYield: null,
 			inflationAdjustedAnnualYield: null
@@ -39,7 +41,7 @@ class FDCalculator extends Component{
 		this.setState({ months: evt.target.value }, () => this.calculateResult());
 	}
 	handleRateChange(evt){
-		this.setState({ rate: evt.target.value/100 }, () => this.calculateResult());
+		this.setState({ rate: evt.target.value/100, rateToDisplay: evt.target.value }, () => this.calculateResult());
 	}
 	handleCompPeriodChange(evt){
 		this.setState({ compoundPeriod: evt.target.value }, () => this.calculateResult());
@@ -50,7 +52,7 @@ class FDCalculator extends Component{
 		});
 	}
 	handleInflationRateChange(evt){
-		this.setState({ inflationRate: (evt.target.value/100).toFixed(2) }, () => this.calculateInflationAdjustment());
+		this.setState({ inflationRate: (evt.target.value/100).toFixed(2), inflationRateToDisplay: evt.target.value }, () => this.calculateInflationAdjustment());
 	}
 	validateInputs(){
 		if( this.state.amount != null && this.state.months != null && this.state.rate != null ){
@@ -114,11 +116,11 @@ class FDCalculator extends Component{
 							</div>
 							<div className="row" style={{marginTop: '0'}}>
 								<div className="col-md-7 col-sm-7 col-xs-7" style={{textAlign: 'left', paddingLeft: '15px'}}>
-									<input id="yieldRange" type="range" step="1" min="0" max="30" onChange={this.handleRateChange} value={(this.state.rate*100)} style={{marginTop: '15px'}}/>
+									<input id="yieldRange" type="range" step="1" min="0" max="30" onChange={this.handleRateChange} value={(this.state.rateToDisplay)} style={{marginTop: '15px'}}/>
 								</div>
 								<div className="col-md-5 col-sm-5 col-xs-5">
 									<div className="input-group">
-										<input type="number" className="form-control calulatorInput" placeholder="Investment Rate" min="1" max="30" onChange={this.handleRateChange} value={(this.state.rate*100)}/>
+										<input type="number" className="form-control calulatorInput" placeholder="Investment Rate" min="1" max="30" onChange={this.handleRateChange} value={(this.state.rateToDisplay)}/>
 										<span className="input-group-addon">%</span>
 									</div>
 								</div>
@@ -193,7 +195,7 @@ class FDCalculator extends Component{
 									<tbody>
 									<tr>
 										<td>Inflation Rate :</td>
-										<td><input type="number" className="calulatorInput" placeholder="%" min="0" max="30" onChange={this.handleInflationRateChange} value={(this.state.inflationRate*100)} style={{textAlign: 'right'}} />%</td>
+										<td><input type="number" className="calulatorInput" placeholder="%" min="0" max="30" onChange={this.handleInflationRateChange} value={(this.state.inflationRateToDisplay)} style={{textAlign: 'right'}} />%</td>
 									</tr>
 									<tr>
 										<td>Inflation Adjusted Return :</td>

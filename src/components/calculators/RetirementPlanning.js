@@ -18,10 +18,13 @@ class RetirementPlanning extends Component{
 			lifeStyle: 300000,
 			monthlySavings: 100000,
 			expectedROR: 0.12,
+			expectedRORToDisplay: 12,
 			currentAge: 50,
 			retirementAge: 65,
 			inflationRate: 0.05,
+			inflationRateToDisplay: 5,
 			taxRate: .12,
+			taxRateToDisplay: 12,
 			retirementBenefit: 0,
 			result: null
 		}
@@ -39,7 +42,7 @@ class RetirementPlanning extends Component{
 		this.setState({ monthlySavings: evt.target.value }, () => this.calculateResult());
 	}
 	handleExpectedROR(evt){
-		this.setState({ expectedROR: evt.target.value/100 }, () => this.calculateResult());
+		this.setState({ expectedROR: evt.target.value/100, expectedRORToDisplay: evt.target.value }, () => this.calculateResult());
 	}
 	handleCurrentAgeChange(evt){
 		if(evt.target.value < this.state.retirementAge){
@@ -52,10 +55,10 @@ class RetirementPlanning extends Component{
 		}
 	}
 	handleInflationRateChange(evt){
-		this.setState({ inflationRate: evt.target.value/100 });
+		this.setState({ inflationRate: evt.target.value/100, inflationRateToDisplay: evt.target.value });
 	}
 	handleTaxRateChange(evt){
-		this.setState({ taxRate: evt.target.value/100 });
+		this.setState({ taxRate: evt.target.value/100, taxRateToDisplay: evt.target.value });
 	}
 	handleRetirementBenefitChange(evt){
 		this.setState({ retirementBenefit: evt.target.value });
@@ -90,11 +93,11 @@ class RetirementPlanning extends Component{
 							<div><b>Expected Rate of Return</b></div>
 							<div>
 								<div className="col-md-7 col-sm-7 col-xs-7" style={{textAlign: 'left', padding: '0'}}>
-									<input id="yieldRange" type="range" step="1" min="0" max="100" onChange={this.handleExpectedROR} value={(this.state.expectedROR*100)} style={{marginTop: '15px'}}/>
+									<input id="yieldRange" type="range" step="1" min="0" max="100" onChange={this.handleExpectedROR} value={(this.state.expectedRORToDisplay)} style={{marginTop: '15px'}}/>
 								</div>
 								<div className="col-md-5 col-sm-5 col-xs-5">
 									<div className="input-group">
-										<input type="number" className="form-control calulatorInput" placeholder="Expected Rate of Return" onChange={this.handleExpectedROR} value={this.state.expectedROR*100}/>
+										<input type="number" className="form-control calulatorInput" placeholder="Expected Rate of Return" onChange={this.handleExpectedROR} value={this.state.expectedRORToDisplay}/>
 										<span className="input-group-addon">%</span>
 									</div>
 								</div>
@@ -132,11 +135,11 @@ class RetirementPlanning extends Component{
 							<div><b>Inflation Rate</b></div>
 							<div>
 								<div className="col-md-7 col-sm-7 col-xs-7" style={{textAlign: 'left', padding: '0'}}>
-									<input type="range" step="1" min="0" max="100" onChange={this.handleInflationRateChange} value={(this.state.inflationRate*100)} style={{marginTop: '15px'}}/>
+									<input type="range" step="1" min="0" max="100" onChange={this.handleInflationRateChange} value={(this.state.inflationRateToDisplay)} style={{marginTop: '15px'}}/>
 								</div>
 								<div className="col-md-5 col-sm-5 col-xs-5">
 									<div className="input-group">
-										<input type="number" className="form-control calulatorInput" placeholder="Inflation Rate" onChange={this.handleInflationRateChange} value={(this.state.inflationRate*100)}/>
+										<input type="number" className="form-control calulatorInput" placeholder="Inflation Rate" onChange={this.handleInflationRateChange} value={(this.state.inflationRateToDisplay)}/>
 										<span className="input-group-addon">%</span>
 									</div>
 								</div>
@@ -146,11 +149,11 @@ class RetirementPlanning extends Component{
 							<div><b>Tax Rate</b></div>
 							<div>
 								<div className="col-md-7 col-sm-7 col-xs-7" style={{textAlign: 'left', padding: '0'}}>
-									<input type="range" step="1" min="0" max="100" onChange={this.handleTaxRateChange} value={(this.state.taxRate*100)} style={{marginTop: '15px'}}/>
+									<input type="range" step="1" min="0" max="100" onChange={this.handleTaxRateChange} value={(this.state.taxRateToDisplay)} style={{marginTop: '15px'}}/>
 								</div>
 								<div className="col-md-5 col-sm-5 col-xs-5">
 									<div className="input-group">
-										<input type="number" className="form-control calulatorInput" placeholder="Tax Rate" onChange={this.handleTaxRateChange} value={this.state.taxRate*100}/>
+										<input type="number" className="form-control calulatorInput" placeholder="Tax Rate" onChange={this.handleTaxRateChange} value={this.state.taxRateToDisplay}/>
 										<span className="input-group-addon">%</span>
 									</div>
 								</div>
@@ -161,7 +164,7 @@ class RetirementPlanning extends Component{
 							<input type="number" className="form-control calulatorInput" placeholder="Retirement Benefit" onChange={this.handleRetirementBenefitChange} value={this.state.retirementBenefit}/>
 							</div>
 							<div style={{ textAlign: 'center', color: 'steelblue', fontSize: 'x-large' }}>
-								<span style={{fontSize: 'large', color: 'black'}}>Monthly Installment :</span>
+								<span style={{fontSize: 'large', color: 'black'}}>FV of Investment before Inflation and taxes :</span>
 								<span style={{color: 'black', margin: '0 10px 0 20px'}}>&#8377;</span>
 								{(this.state.result).toFixed(2)}
 							</div>
